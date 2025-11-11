@@ -3,14 +3,8 @@ import {
   Scripts,
   createRootRouteWithContext,
 } from '@tanstack/react-router'
-import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
-import { TanStackDevtools } from '@tanstack/react-devtools'
-
-import Header from '../components/Header'
-
-import TanStackQueryDevtools from '../integrations/tanstack-query/devtools'
-
-import StoreDevtools from '../lib/demo-store-devtools'
+import { LayoutHeader } from '../components/LayoutHeader'
+import { LayoutFooter } from '../components/LayoutFooter'
 
 import appCss from '../styles.css?url'
 
@@ -56,24 +50,30 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       <head>
         <HeadContent />
       </head>
-      <body>
-        <Header />
-        {children}
-        <TanStackDevtools
-          config={{
-            position: 'bottom-right',
-          }}
-          plugins={[
-            {
-              name: 'Tanstack Router',
-              render: <TanStackRouterDevtoolsPanel />,
-            },
-            TanStackQueryDevtools,
-            StoreDevtools,
-          ]}
-        />
+      <body
+        style={{
+          backgroundColor: '#0a0a0a',
+          minHeight: '100vh',
+        }}
+      >
+        <InnerDocument>{children}</InnerDocument>
         <Scripts />
       </body>
     </html>
+  )
+}
+
+function InnerDocument({ children }: { children: React.ReactNode }) {
+  return (
+    <>
+      {/* Layout Header - Global */}
+      <LayoutHeader />
+
+      {/* Main content with padding for fixed footer */}
+      <div style={{ paddingBottom: '60px' }}>{children}</div>
+
+      {/* Layout Footer - Global */}
+      <LayoutFooter />
+    </>
   )
 }
