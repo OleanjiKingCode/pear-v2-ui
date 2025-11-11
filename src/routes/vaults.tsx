@@ -80,33 +80,40 @@ function VaultsPage() {
   const [searchQuery, setSearchQuery] = useState('')
 
   return (
-    <div>
+    <div className="relative">
+      {/* Gradient Background */}
+      <div
+        className="absolute top-0 left-0 right-0 w-full pointer-events-none opacity-10"
+        style={{
+          background:
+            'linear-gradient(180deg, #A2DB5C 0%, rgba(10, 10, 10, 0.00) 100%)',
+          height: '250px',
+        }}
+      />
+
       {/* Main Content */}
-      <div className="px-4 lg:px-8 py-8">
-        <div className="max-w-[1600px] mx-auto">
+      <div
+        className="relative px-4 lg:px-8 pt-[13px] pb-8"
+        style={{
+          maxWidth: '1232px',
+          maxHeight: '639px',
+          margin: '0 auto',
+        }}
+      >
+        <div className="mx-auto">
           <div className="flex flex-col lg:flex-row gap-6">
             {/* Left Column - Main Content */}
             <div className="flex-1">
               {/* Header */}
               <div className="mb-8">
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
-                  <h1
-                    className="text-4xl font-semibold"
-                    style={{
-                      color: 'var(--color-semantic color tokens-text-primary)',
-                    }}
-                  >
+                  <h1 className="text-4xl font-semibold text-text-primary">
                     Vaults
                   </h1>
 
                   <button
                     onClick={() => setShowMyInvestments(!showMyInvestments)}
-                    className="lg:hidden px-4 py-2 rounded-lg text-sm font-medium"
-                    style={{
-                      backgroundColor:
-                        'var(--color-semantic color tokens-background-elevated)',
-                      color: 'var(--color-semantic color tokens-brand-primary)',
-                    }}
+                    className="lg:hidden px-4 py-2 rounded-lg text-sm font-medium bg-bg-elevated text-brand-primary"
                   >
                     My Investments
                   </button>
@@ -115,54 +122,25 @@ function VaultsPage() {
                 {/* Stats */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
                   <div>
-                    <div
-                      className="text-sm mb-1"
-                      style={{
-                        color:
-                          'var(--color-semantic color tokens-text-secondary)',
-                      }}
-                    >
+                    <div className="text-sm mb-1 text-text-tertiary">
                       Total Value Locked
                     </div>
-                    <div
-                      className="text-3xl font-semibold"
-                      style={{
-                        color:
-                          'var(--color-semantic color tokens-text-primary)',
-                      }}
-                    >
+                    <div className="text-3xl font-semibold text-text-primary">
                       $900,982,893.65
                     </div>
                   </div>
                   <div>
-                    <div
-                      className="text-sm mb-1"
-                      style={{
-                        color:
-                          'var(--color-semantic color tokens-text-secondary)',
-                      }}
-                    >
+                    <div className="text-sm mb-1 text-text-tertiary">
                       Total PnL
                     </div>
-                    <div
-                      className="text-3xl font-semibold"
-                      style={{
-                        color:
-                          'var(--color-semantic color tokens-text-primary)',
-                      }}
-                    >
+                    <div className="text-3xl font-semibold text-text-primary">
                       $890,342,096.87
                     </div>
                   </div>
                   <div className="flex md:justify-end items-end">
                     <Button
                       size="lg"
-                      style={{
-                        backgroundColor:
-                          'var(--color-semantic color tokens-brand-primary)',
-                        color:
-                          'var(--color-semantic color tokens-text-inverse)',
-                      }}
+                      className="bg-brand-primary text-text-inverse"
                     >
                       Create Vault
                     </Button>
@@ -171,55 +149,31 @@ function VaultsPage() {
 
                 {/* Search */}
                 <div className="relative">
-                  <Search
-                    className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5"
-                    style={{
-                      color:
-                        'var(--color-semantic color tokens-text-secondary)',
-                    }}
-                  />
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-text-secondary" />
                   <input
                     type="text"
                     placeholder="Search Vaults"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full pl-10 pr-4 py-3 rounded-lg outline-none transition-all"
-                    style={{
-                      backgroundColor:
-                        'var(--color-semantic color tokens-background-elevated)',
-                      color: 'var(--color-semantic color tokens-text-primary)',
-                      border: `1px solid var(--color-semantic color tokens-borders-default)`,
-                    }}
+                    className="w-full pl-10 pr-4 py-3 rounded-lg outline-none transition-all bg-bg-elevated text-text-primary border border-border-default"
                   />
                 </div>
               </div>
 
               {/* Tabs */}
-              <div
-                className="flex gap-8 mb-6 border-b"
-                style={{
-                  borderColor:
-                    'var(--color-semantic color tokens-borders-default)',
-                }}
-              >
+              <div className="flex gap-8 mb-6 border-b border-border-default">
                 <button
                   onClick={() => setActiveTab('all')}
                   className={cn(
                     'pb-3 text-sm font-medium transition-all relative',
                     activeTab === 'all'
-                      ? 'text-[var(--color-semantic_color_tokens-text-primary)]'
-                      : 'text-[var(--color-semantic_color_tokens-text-secondary)]',
+                      ? 'text-text-primary'
+                      : 'text-text-secondary',
                   )}
                 >
                   All Vaults
                   {activeTab === 'all' && (
-                    <div
-                      className="absolute bottom-0 left-0 right-0 h-0.5"
-                      style={{
-                        backgroundColor:
-                          'var(--color-semantic color tokens-brand-primary)',
-                      }}
-                    />
+                    <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-brand-primary" />
                   )}
                 </button>
                 <button
@@ -227,19 +181,13 @@ function VaultsPage() {
                   className={cn(
                     'pb-3 text-sm font-medium transition-all relative',
                     activeTab === 'invested'
-                      ? 'text-[var(--color-semantic_color_tokens-text-primary)]'
-                      : 'text-[var(--color-semantic_color_tokens-text-secondary)]',
+                      ? 'text-text-primary'
+                      : 'text-text-secondary',
                   )}
                 >
                   Invested Vaults
                   {activeTab === 'invested' && (
-                    <div
-                      className="absolute bottom-0 left-0 right-0 h-0.5"
-                      style={{
-                        backgroundColor:
-                          'var(--color-semantic color tokens-brand-primary)',
-                      }}
-                    />
+                    <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-brand-primary" />
                   )}
                 </button>
               </div>
@@ -334,19 +282,14 @@ function VaultsPage() {
                       {mockVaults.map((vault) => (
                         <tr
                           key={vault.id}
-                          className="border-b hover:opacity-80 transition-opacity cursor-pointer"
-                          style={{
-                            borderColor:
-                              'var(--color-semantic color tokens-borders-subtle)',
-                          }}
+                          className="border-b hover:opacity-80 transition-opacity cursor-pointer border-border-subtle"
                         >
                           <td className="px-6 py-4">
                             <div className="flex items-center gap-3">
                               <div
                                 className="w-8 h-8 rounded-full flex items-center justify-center"
                                 style={{
-                                  background:
-                                    'linear-gradient(90deg, #a2db5c 0%, #29f8ff 100%)',
+                                  background: 'var(--brand-gradient)',
                                 }}
                               >
                                 <span className="text-black text-xs font-bold">
@@ -354,76 +297,32 @@ function VaultsPage() {
                                 </span>
                               </div>
                               <div>
-                                <div
-                                  className="font-medium"
-                                  style={{
-                                    color:
-                                      'var(--color-semantic color tokens-text-primary)',
-                                  }}
-                                >
+                                <div className="font-medium text-text-primary">
                                   {vault.name}
                                 </div>
                                 {vault.variant && (
-                                  <div
-                                    className="text-xs"
-                                    style={{
-                                      color:
-                                        'var(--color-semantic color tokens-text-secondary)',
-                                    }}
-                                  >
+                                  <div className="text-xs text-text-secondary">
                                     - {vault.variant}
                                   </div>
                                 )}
                               </div>
                             </div>
                           </td>
-                          <td
-                            className="px-6 py-4 font-mono text-sm"
-                            style={{
-                              color:
-                                'var(--color-semantic color tokens-text-primary)',
-                            }}
-                          >
+                          <td className="px-6 py-4 font-mono text-sm text-text-primary">
                             {vault.leader}
                           </td>
-                          <td
-                            className="px-6 py-4 font-mono text-sm"
-                            style={{
-                              color:
-                                'var(--color-semantic color tokens-text-primary)',
-                            }}
-                          >
+                          <td className="px-6 py-4 font-mono text-sm text-text-primary">
                             {vault.tvl}
                           </td>
                           <td className="px-6 py-4">
-                            <span
-                              className="px-2 py-1 rounded text-sm font-medium"
-                              style={{
-                                backgroundColor:
-                                  'var(--color-semantic color tokens-states-success)',
-                                color:
-                                  'var(--color-semantic color tokens-text-primary)',
-                              }}
-                            >
+                            <span className="px-2 py-1 rounded text-sm font-medium bg-state-success text-text-primary">
                               {vault.apr}
                             </span>
                           </td>
-                          <td
-                            className="px-6 py-4 text-sm"
-                            style={{
-                              color:
-                                'var(--color-semantic color tokens-text-primary)',
-                            }}
-                          >
+                          <td className="px-6 py-4 text-sm text-text-primary">
                             {vault.age}
                           </td>
-                          <td
-                            className="px-6 py-4 text-sm"
-                            style={{
-                              color:
-                                'var(--color-semantic color tokens-text-primary)',
-                            }}
-                          >
+                          <td className="px-6 py-4 text-sm text-text-primary">
                             {vault.investors}
                           </td>
                           <td className="px-6 py-4">
@@ -436,13 +335,7 @@ function VaultsPage() {
                 </div>
 
                 {/* Mobile Cards */}
-                <div
-                  className="lg:hidden divide-y"
-                  style={{
-                    borderColor:
-                      'var(--color-semantic color tokens-borders-default)',
-                  }}
-                >
+                <div className="lg:hidden divide-y divide-border-default">
                   {mockVaults.map((vault) => (
                     <div key={vault.id} className="p-4">
                       <div className="flex items-start justify-between mb-3">
@@ -450,8 +343,7 @@ function VaultsPage() {
                           <div
                             className="w-10 h-10 rounded-full flex items-center justify-center"
                             style={{
-                              background:
-                                'linear-gradient(90deg, #a2db5c 0%, #29f8ff 100%)',
+                              background: 'var(--brand-gradient)',
                             }}
                           >
                             <span className="text-black text-sm font-bold">
@@ -459,112 +351,42 @@ function VaultsPage() {
                             </span>
                           </div>
                           <div>
-                            <div
-                              className="font-medium"
-                              style={{
-                                color:
-                                  'var(--color-semantic color tokens-text-primary)',
-                              }}
-                            >
+                            <div className="font-medium text-text-primary">
                               {vault.name}
                             </div>
                             {vault.variant && (
-                              <div
-                                className="text-xs"
-                                style={{
-                                  color:
-                                    'var(--color-semantic color tokens-text-secondary)',
-                                }}
-                              >
+                              <div className="text-xs text-text-secondary">
                                 - {vault.variant}
                               </div>
                             )}
                           </div>
                         </div>
-                        <span
-                          className="px-2 py-1 rounded text-xs font-medium"
-                          style={{
-                            backgroundColor:
-                              'var(--color-semantic color tokens-states-success)',
-                            color:
-                              'var(--color-semantic color tokens-text-primary)',
-                          }}
-                        >
+                        <span className="px-2 py-1 rounded text-xs font-medium bg-state-success text-text-primary">
                           {vault.apr}
                         </span>
                       </div>
                       <div className="grid grid-cols-2 gap-3 text-sm">
                         <div>
-                          <span
-                            style={{
-                              color:
-                                'var(--color-semantic color tokens-text-secondary)',
-                            }}
-                          >
-                            Leader:{' '}
-                          </span>
-                          <span
-                            className="font-mono"
-                            style={{
-                              color:
-                                'var(--color-semantic color tokens-text-primary)',
-                            }}
-                          >
+                          <span className="text-text-secondary">Leader: </span>
+                          <span className="font-mono text-text-primary">
                             {vault.leader}
                           </span>
                         </div>
                         <div>
-                          <span
-                            style={{
-                              color:
-                                'var(--color-semantic color tokens-text-secondary)',
-                            }}
-                          >
-                            TVL:{' '}
-                          </span>
-                          <span
-                            className="font-mono"
-                            style={{
-                              color:
-                                'var(--color-semantic color tokens-text-primary)',
-                            }}
-                          >
+                          <span className="text-text-secondary">TVL: </span>
+                          <span className="font-mono text-text-primary">
                             {vault.tvl}
                           </span>
                         </div>
                         <div>
-                          <span
-                            style={{
-                              color:
-                                'var(--color-semantic color tokens-text-secondary)',
-                            }}
-                          >
-                            Age:{' '}
-                          </span>
-                          <span
-                            style={{
-                              color:
-                                'var(--color-semantic color tokens-text-primary)',
-                            }}
-                          >
-                            {vault.age}
-                          </span>
+                          <span className="text-text-secondary">Age: </span>
+                          <span className="text-text-primary">{vault.age}</span>
                         </div>
                         <div>
-                          <span
-                            style={{
-                              color:
-                                'var(--color-semantic color tokens-text-secondary)',
-                            }}
-                          >
+                          <span className="text-text-secondary">
                             Investors:{' '}
                           </span>
-                          <span
-                            style={{
-                              color:
-                                'var(--color-semantic color tokens-text-primary)',
-                            }}
-                          >
+                          <span className="text-text-primary">
                             {vault.investors}
                           </span>
                         </div>
@@ -586,46 +408,20 @@ function VaultsPage() {
               )}
             >
               <div className="sticky top-8">
-                <div
-                  className="rounded-lg border p-6"
-                  style={{
-                    backgroundColor:
-                      'var(--color-semantic color tokens-background-elevated)',
-                    borderColor:
-                      'var(--color-semantic color tokens-borders-default)',
-                  }}
-                >
+                <div className="rounded-lg border p-6 bg-bg-elevated border-border-default">
                   <div className="flex items-center justify-between mb-6">
-                    <h2
-                      className="text-lg font-semibold"
-                      style={{
-                        color:
-                          'var(--color-semantic color tokens-text-primary)',
-                      }}
-                    >
+                    <h2 className="text-lg font-semibold text-text-primary">
                       My Investments
                     </h2>
                     <div className="flex items-center gap-2">
                       <button className="p-1.5 rounded hover:opacity-80 transition-opacity">
-                        <Maximize2
-                          className="w-4 h-4"
-                          style={{
-                            color:
-                              'var(--color-semantic color tokens-text-secondary)',
-                          }}
-                        />
+                        <Maximize2 className="w-4 h-4 text-text-secondary" />
                       </button>
                       <button
                         className="lg:hidden p-1.5 rounded hover:opacity-80 transition-opacity"
                         onClick={() => setShowMyInvestments(false)}
                       >
-                        <X
-                          className="w-4 h-4"
-                          style={{
-                            color:
-                              'var(--color-semantic color tokens-text-secondary)',
-                          }}
-                        />
+                        <X className="w-4 h-4 text-text-secondary" />
                       </button>
                     </div>
                   </div>
@@ -633,62 +429,24 @@ function VaultsPage() {
                   {/* Total Investment */}
                   <div className="mb-6">
                     <div className="flex items-center gap-2 mb-2">
-                      <div
-                        className="w-6 h-6 rounded-full flex items-center justify-center"
-                        style={{
-                          backgroundColor:
-                            'var(--color-semantic color tokens-brand-accent)',
-                        }}
-                      >
+                      <div className="w-6 h-6 rounded-full flex items-center justify-center bg-brand-accent">
                         <TrendingUp className="w-4 h-4 text-white" />
                       </div>
-                      <span
-                        className="text-2xl font-semibold"
-                        style={{
-                          color:
-                            'var(--color-semantic color tokens-text-primary)',
-                        }}
-                      >
+                      <span className="text-2xl font-semibold text-text-primary">
                         $0.00
                       </span>
                     </div>
 
                     <div className="grid grid-cols-2 gap-4 text-sm">
                       <div>
-                        <div
-                          style={{
-                            color:
-                              'var(--color-semantic color tokens-text-secondary)',
-                          }}
-                        >
-                          Total PnL
-                        </div>
-                        <div
-                          className="font-semibold"
-                          style={{
-                            color:
-                              'var(--color-semantic color tokens-text-primary)',
-                          }}
-                        >
+                        <div className="text-text-tertiary">Total PnL</div>
+                        <div className="font-semibold text-text-primary">
                           $0.00
                         </div>
                       </div>
                       <div>
-                        <div
-                          style={{
-                            color:
-                              'var(--color-semantic color tokens-text-secondary)',
-                          }}
-                        >
-                          Unrealized PnL
-                        </div>
-                        <div
-                          className="font-semibold"
-                          style={{
-                            color:
-                              'var(--color-semantic color tokens-text-primary)',
-                          }}
-                        >
+                        <div className="text-text-tertiary">Unrealized PnL</div>
+                        <div className="font-semibold text-text-primary">
                           $0.00
                         </div>
                       </div>
@@ -696,26 +454,14 @@ function VaultsPage() {
                   </div>
 
                   {/* Transaction History Header */}
-                  <div
-                    className="grid grid-cols-3 gap-4 text-xs font-medium mb-3"
-                    style={{
-                      color:
-                        'var(--color-semantic color tokens-text-secondary)',
-                    }}
-                  >
+                  <div className="grid grid-cols-3 gap-4 text-xs font-medium mb-3 text-text-tertiary">
                     <div>Transfer</div>
                     <div>Amount</div>
                     <div>Vault</div>
                   </div>
 
                   {/* No History State */}
-                  <div
-                    className="py-12 text-center"
-                    style={{
-                      color:
-                        'var(--color-semantic color tokens-text-secondary)',
-                    }}
-                  >
+                  <div className="py-12 text-center text-text-secondary">
                     No History Yet
                   </div>
 
@@ -766,7 +512,7 @@ function MiniChart({ data }: { data: number[] }) {
       <polyline
         points={points}
         fill="none"
-        stroke="var(--color-semantic_color_tokens-brand-primary)"
+        stroke="#a2db5c"
         strokeWidth="2"
         vectorEffect="non-scaling-stroke"
       />
