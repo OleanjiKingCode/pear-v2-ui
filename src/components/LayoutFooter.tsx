@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import { TrendingUp } from 'lucide-react'
 import { colors } from '@/lib/design-tokens'
+import { noConnection, poorConnection, stableConnection } from './ui/svgIcons'
 
 type ConnectionStatus = 'none' | 'stable' | 'poor'
 
@@ -12,12 +12,12 @@ export function LayoutFooter() {
   const getConnectionColor = () => {
     switch (connectionStatus) {
       case 'stable':
-        return colors.states.success
+        return stableConnection()
       case 'poor':
-        return colors.text.warning
+        return poorConnection()
       case 'none':
       default:
-        return colors.states.error
+        return noConnection()
     }
   }
 
@@ -52,12 +52,13 @@ export function LayoutFooter() {
   }
 
   return (
-    <footer className="fixed bottom-0 left-0 right-0 border-t p-9px bg-bg-base border-border-default">
+    <footer className="fixed bottom-0 flex items-center justify-between left-0 right-0 border-t px-9px py-4px bg-bg-base border-border-default">
       <div className="flex items-center gap-4">
         <button className="px-3 py-1.5 rounded text-xs font-medium bg-brand-secondary text-brand-primary">
           Withdraw Funds
         </button>
-        <div className="flex items-center gap-3 text-xs">
+
+        <div className="flex items-center gap-3px text-xs">
           <span className="text-text-secondary underline decoration-dotted">
             uPNL:
           </span>
@@ -67,6 +68,8 @@ export function LayoutFooter() {
           >
             {upnl}
           </span>
+        </div>
+        <div className="flex items-center gap-3px text-xs">
           <span className="text-text-secondary underline decoration-dotted">
             Avl margin:
           </span>
@@ -76,47 +79,119 @@ export function LayoutFooter() {
         </div>
       </div>
 
-      <div className="flex items-center gap-4">
-        <button className="flex items-center gap-2 px-3 py-1.5 rounded text-xs bg-bg-elevated">
-          <TrendingUp className="w-4 h-4 text-brand-primary" />
-          <span className="text-text-primary">Trade Signals</span>
-          <span className="px-1.5 py-0.5 rounded text-xs font-semibold bg-brand-primary text-text-inverse">
+      <div className="flex items-center gap-9px">
+        <button
+          className="flex items-center gap-3px py-3px px-4px rounded-lg text-xs "
+          style={{
+            background:
+              'linear-gradient(90deg, rgba(162, 219, 92, 0.10) 0%, rgba(41, 248, 255, 0.10) 100%)',
+          }}
+        >
+          <img src="/agentPearWithBg.svg" alt="Pear Logo" className="w-4 h-4" />
+          <span
+            className="text-text-inverse font-medium"
+            style={{
+              background: 'linear-gradient(90deg, #a2db5c 0%, #29f8ff 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+            }}
+          >
+            Trade Signals
+          </span>
+          <span className="rounded text-xs font-semibold text-text-primary">
             16
           </span>
         </button>
 
-        <button className="p-1.5 rounded hover:opacity-80 transition-opacity bg-bg-elevated">
-          <svg
-            className="w-4 h-4 text-text-primary"
-            fill="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-          </svg>
-        </button>
+        <div className="h-4 w-px bg-border-default" />
 
-        <button className="flex items-center gap-1.5 px-3 py-1.5 rounded text-xs hover:opacity-80 transition-opacity bg-bg-elevated text-text-primary">
-          <svg
-            className="w-4 h-4"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-            />
-          </svg>
-          Docs
-        </button>
+        <div className="flex items-center gap-7px">
+          <button className=" rounded hover:opacity-80 transition-opacity pl-2px ">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              fill="none"
+            >
+              <path
+                d="M15.4694 10.8993L13.625 3.62488C13.5765 3.4355 13.4738 3.26439 13.3295 3.13251C13.1851 3.00063 13.0055 2.9137 12.8125 2.88238L10.5588 2.51238C10.3103 2.47242 10.0559 2.52629 9.84496 2.66353C9.63402 2.80076 9.48167 3.01154 9.41753 3.25488L9.40441 3.308C9.39591 3.34175 9.39455 3.37691 9.40042 3.41122C9.40629 3.44552 9.41926 3.47822 9.4385 3.50723C9.45774 3.53623 9.48282 3.5609 9.51215 3.57965C9.54147 3.59841 9.57438 3.61083 9.60878 3.61613C10.1259 3.69203 10.6361 3.80949 11.1344 3.96738C11.259 4.00496 11.3646 4.08852 11.4298 4.2011C11.495 4.31369 11.515 4.44687 11.4857 4.57363C11.4688 4.63968 11.4386 4.70159 11.3969 4.75555C11.3552 4.80951 11.303 4.85437 11.2433 4.88739C11.1837 4.9204 11.1179 4.94087 11.0501 4.94753C10.9822 4.9542 10.9137 4.94691 10.8488 4.92613C8.99992 4.35912 7.02389 4.35694 5.17378 4.91988C5.04858 4.96198 4.91197 4.95423 4.79232 4.89825C4.67268 4.84227 4.57919 4.74235 4.53128 4.61925C4.50851 4.55609 4.49869 4.48898 4.50242 4.42194C4.50615 4.3549 4.52334 4.28929 4.55297 4.22904C4.5826 4.16878 4.62406 4.11512 4.67489 4.07123C4.72571 4.02735 4.78485 3.99416 4.84878 3.97363C5.35328 3.81293 5.86997 3.69338 6.39378 3.61613C6.42818 3.61083 6.46109 3.59841 6.49042 3.57965C6.51974 3.5609 6.54482 3.53623 6.56406 3.50723C6.5833 3.47822 6.59627 3.44552 6.60214 3.41122C6.60801 3.37691 6.60665 3.34175 6.59816 3.308L6.58503 3.25488C6.52087 3.01133 6.36831 2.80042 6.15708 2.66326C5.94585 2.5261 5.69111 2.47253 5.44253 2.513L3.18753 2.883C2.99464 2.91428 2.81505 3.00112 2.67074 3.13288C2.52644 3.26464 2.42367 3.43562 2.37503 3.62488L0.530656 10.8993C0.472826 11.1279 0.497995 11.3697 0.601683 11.5815C0.705372 11.7933 0.880854 11.9615 1.09691 12.0561L5.28441 13.913C5.41032 13.969 5.54635 13.9986 5.68414 14.0001C5.82192 14.0016 5.95856 13.9749 6.08564 13.9216C6.21272 13.8683 6.32757 13.7896 6.42312 13.6903C6.51867 13.5911 6.59292 13.4733 6.64128 13.3443L6.85941 12.7536C6.8724 12.7183 6.87723 12.6804 6.87354 12.6429C6.86984 12.6054 6.85771 12.5692 6.83805 12.537C6.8184 12.5049 6.79173 12.4776 6.76003 12.4572C6.72834 12.4368 6.69244 12.4238 6.65503 12.4193C6.04787 12.3457 5.44884 12.216 4.86566 12.0318C4.7416 11.9941 4.63645 11.9107 4.57139 11.7986C4.50632 11.6864 4.48619 11.5538 4.51503 11.4274C4.53175 11.3611 4.56187 11.299 4.60352 11.2449C4.64518 11.1907 4.69749 11.1457 4.75723 11.1125C4.81696 11.0794 4.88286 11.0588 4.95085 11.0521C5.01884 11.0455 5.08748 11.0528 5.15253 11.0736C7.00833 11.642 8.99173 11.642 10.8475 11.0736C10.9125 11.0529 10.981 11.0456 11.0489 11.0523C11.1168 11.059 11.1826 11.0795 11.2423 11.1126C11.3019 11.1457 11.3542 11.1906 11.3958 11.2446C11.4375 11.2987 11.4676 11.3606 11.4844 11.4268C11.5136 11.5533 11.4936 11.6861 11.4285 11.7985C11.3634 11.9108 11.2581 11.9942 11.1338 12.0318C10.5508 12.2161 9.952 12.3458 9.34503 12.4193C9.30762 12.4238 9.27172 12.4368 9.24003 12.4572C9.20834 12.4776 9.18166 12.5049 9.16201 12.537C9.14235 12.5692 9.13022 12.6054 9.12653 12.6429C9.12283 12.6804 9.12766 12.7183 9.14066 12.7536L9.35878 13.3443C9.40722 13.4732 9.48151 13.5909 9.57707 13.6902C9.67264 13.7894 9.78748 13.8681 9.91453 13.9213C10.0416 13.9746 10.1782 14.0013 10.316 13.9999C10.4537 13.9985 10.5897 13.9689 10.7157 13.913L14.9032 12.0561C15.1192 11.9615 15.2947 11.7933 15.3984 11.5815C15.5021 11.3697 15.5272 11.1279 15.4694 10.8993ZM5.75003 9.49988C5.6017 9.49988 5.45669 9.45589 5.33335 9.37348C5.21002 9.29107 5.11389 9.17393 5.05712 9.03689C5.00036 8.89985 4.9855 8.74905 5.01444 8.60356C5.04338 8.45807 5.11481 8.32444 5.2197 8.21955C5.32459 8.11466 5.45823 8.04323 5.60371 8.01429C5.7492 7.98535 5.9 8.0002 6.03704 8.05697C6.17409 8.11373 6.29122 8.20986 6.37363 8.3332C6.45605 8.45654 6.50003 8.60154 6.50003 8.74988C6.50003 8.94879 6.42101 9.13956 6.28036 9.28021C6.13971 9.42086 5.94894 9.49988 5.75003 9.49988ZM10.25 9.49988C10.1017 9.49988 9.95669 9.45589 9.83335 9.37348C9.71002 9.29107 9.61389 9.17393 9.55712 9.03689C9.50036 8.89985 9.4855 8.74905 9.51444 8.60356C9.54338 8.45807 9.61481 8.32444 9.7197 8.21955C9.82459 8.11466 9.95823 8.04323 10.1037 8.01429C10.2492 7.98535 10.4 8.0002 10.537 8.05697C10.6741 8.11373 10.7912 8.20986 10.8736 8.3332C10.956 8.45654 11 8.60154 11 8.74988C11 8.94879 10.921 9.13956 10.7804 9.28021C10.6397 9.42086 10.4489 9.49988 10.25 9.49988Z"
+                fill="#A8A29E"
+              />
+            </svg>
+          </button>
 
-        <div className="flex items-center gap-2 px-3 py-1.5 text-xs">
-          <div
-            className="w-2 h-2 rounded-full"
-            style={{ backgroundColor: getConnectionColor() }}
-          />
+          <button className=" rounded hover:opacity-80 transition-opacity ">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              fill="none"
+            >
+              <path
+                d="M3 2.5H6L13 13.5H10L3 2.5Z"
+                stroke="#A8A29E"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <path
+                d="M7.1175 8.9707L3 13.5001"
+                stroke="#A8A29E"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <path
+                d="M13.0001 2.5L8.88257 7.02938"
+                stroke="#A8A29E"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </button>
+
+          <button className="flex items-center gap-[2px] pr-2px rounded text-xs hover:opacity-80 transition-opacity text-text-primary">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              fill="none"
+            >
+              <path
+                d="M10.25 14H3.5C3.36739 14 3.24021 13.9473 3.14645 13.8536C3.05268 13.7598 3 13.6326 3 13.5V4.75C3 4.61739 3.05268 4.49021 3.14645 4.39645C3.24021 4.30268 3.36739 4.25 3.5 4.25H8.25L10.75 6.75V13.5C10.75 13.6326 10.6973 13.7598 10.6036 13.8536C10.5098 13.9473 10.3826 14 10.25 14Z"
+                stroke="#A8A29E"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <path
+                d="M5.25 4.25V2.25C5.25 2.11739 5.30268 1.99021 5.39645 1.89645C5.49021 1.80268 5.61739 1.75 5.75 1.75H10.75L13.25 4.25V11C13.25 11.1326 13.1973 11.2598 13.1036 11.3536C13.0098 11.4473 12.8826 11.5 12.75 11.5H10.75"
+                stroke="#A8A29E"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <path
+                d="M5.5 9H8.25"
+                stroke="#A8A29E"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <path
+                d="M5.5 11.5H8.25"
+                stroke="#A8A29E"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+            Docs
+          </button>
+        </div>
+
+        <div className="h-4 w-px bg-border-default" />
+
+        <div className="flex items-center gap-2 text-xs">
+          <> {getConnectionColor()}</>
           <span style={{ color: getConnectionTextColor() }}>
             {getConnectionText()}
           </span>

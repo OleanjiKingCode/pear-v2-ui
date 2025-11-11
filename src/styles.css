@@ -123,6 +123,7 @@ code {
   --brand-primary: #a2db5c;
   --brand-secondary: #202919;
   --brand-accent: #14b8a6;
+  --brand-gradient: linear-gradient(90deg, #a2db5c 0%, #29f8ff 100%);
 
   /* Text colors */
   --text-primary: #fafafa;
