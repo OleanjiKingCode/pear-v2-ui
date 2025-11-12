@@ -36,6 +36,10 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
     links: [
       {
         rel: 'stylesheet',
+        href: 'https://cdn.jsdelivr.net/npm/geist@1.2.1/dist/font.css',
+      },
+      {
+        rel: 'stylesheet',
         href: appCss,
       },
     ],

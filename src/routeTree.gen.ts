@@ -10,11 +10,41 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as VaultsRouteImport } from './routes/vaults'
+import { Route as TradeRouteImport } from './routes/trade'
+import { Route as PortfolioRouteImport } from './routes/portfolio'
+import { Route as MarketsRouteImport } from './routes/markets'
+import { Route as EarnRouteImport } from './routes/earn'
+import { Route as AgentPearRouteImport } from './routes/agent-pear'
 import { Route as IndexRouteImport } from './routes/index'
 
 const VaultsRoute = VaultsRouteImport.update({
   id: '/vaults',
   path: '/vaults',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TradeRoute = TradeRouteImport.update({
+  id: '/trade',
+  path: '/trade',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PortfolioRoute = PortfolioRouteImport.update({
+  id: '/portfolio',
+  path: '/portfolio',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MarketsRoute = MarketsRouteImport.update({
+  id: '/markets',
+  path: '/markets',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EarnRoute = EarnRouteImport.update({
+  id: '/earn',
+  path: '/earn',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AgentPearRoute = AgentPearRouteImport.update({
+  id: '/agent-pear',
+  path: '/agent-pear',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -25,27 +55,69 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/agent-pear': typeof AgentPearRoute
+  '/earn': typeof EarnRoute
+  '/markets': typeof MarketsRoute
+  '/portfolio': typeof PortfolioRoute
+  '/trade': typeof TradeRoute
   '/vaults': typeof VaultsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/agent-pear': typeof AgentPearRoute
+  '/earn': typeof EarnRoute
+  '/markets': typeof MarketsRoute
+  '/portfolio': typeof PortfolioRoute
+  '/trade': typeof TradeRoute
   '/vaults': typeof VaultsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/agent-pear': typeof AgentPearRoute
+  '/earn': typeof EarnRoute
+  '/markets': typeof MarketsRoute
+  '/portfolio': typeof PortfolioRoute
+  '/trade': typeof TradeRoute
   '/vaults': typeof VaultsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/vaults'
+  fullPaths:
+    | '/'
+    | '/agent-pear'
+    | '/earn'
+    | '/markets'
+    | '/portfolio'
+    | '/trade'
+    | '/vaults'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/vaults'
-  id: '__root__' | '/' | '/vaults'
+  to:
+    | '/'
+    | '/agent-pear'
+    | '/earn'
+    | '/markets'
+    | '/portfolio'
+    | '/trade'
+    | '/vaults'
+  id:
+    | '__root__'
+    | '/'
+    | '/agent-pear'
+    | '/earn'
+    | '/markets'
+    | '/portfolio'
+    | '/trade'
+    | '/vaults'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AgentPearRoute: typeof AgentPearRoute
+  EarnRoute: typeof EarnRoute
+  MarketsRoute: typeof MarketsRoute
+  PortfolioRoute: typeof PortfolioRoute
+  TradeRoute: typeof TradeRoute
   VaultsRoute: typeof VaultsRoute
 }
 
@@ -56,6 +128,41 @@ declare module '@tanstack/react-router' {
       path: '/vaults'
       fullPath: '/vaults'
       preLoaderRoute: typeof VaultsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/trade': {
+      id: '/trade'
+      path: '/trade'
+      fullPath: '/trade'
+      preLoaderRoute: typeof TradeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/portfolio': {
+      id: '/portfolio'
+      path: '/portfolio'
+      fullPath: '/portfolio'
+      preLoaderRoute: typeof PortfolioRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/markets': {
+      id: '/markets'
+      path: '/markets'
+      fullPath: '/markets'
+      preLoaderRoute: typeof MarketsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/earn': {
+      id: '/earn'
+      path: '/earn'
+      fullPath: '/earn'
+      preLoaderRoute: typeof EarnRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/agent-pear': {
+      id: '/agent-pear'
+      path: '/agent-pear'
+      fullPath: '/agent-pear'
+      preLoaderRoute: typeof AgentPearRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -70,6 +177,11 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AgentPearRoute: AgentPearRoute,
+  EarnRoute: EarnRoute,
+  MarketsRoute: MarketsRoute,
+  PortfolioRoute: PortfolioRoute,
+  TradeRoute: TradeRoute,
   VaultsRoute: VaultsRoute,
 }
 export const routeTree = rootRouteImport

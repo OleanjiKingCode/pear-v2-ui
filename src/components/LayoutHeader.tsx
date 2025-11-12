@@ -15,7 +15,7 @@ export function LayoutHeader({ onMenuClick }: LayoutHeaderProps) {
   const [hasWarning] = useState(false)
   const [isRestrictedRegion] = useState(false)
   return (
-    <nav className="border-b bg-bg-base border-border-default">
+    <nav className="border-b bg-bg-raised border-border-default">
       <div className="flex items-center justify-between p-5px">
         {/* Left: Logo and Nav Links */}
         <div className="flex items-center gap-10px">
@@ -28,15 +28,15 @@ export function LayoutHeader({ onMenuClick }: LayoutHeaderProps) {
 
           {/* Desktop Nav Links */}
           <div className="hidden lg:flex items-center gap-10px">
-            <NavLink to="/">Portfolio</NavLink>
-            <NavLink to="/">Trade</NavLink>
+            <NavLink to="/portfolio">Portfolio</NavLink>
+            <NavLink to="/trade">Trade</NavLink>
             <NavLink to="/vaults">Vaults</NavLink>
-            <NavLink to="/" highlight>
+            <NavLink to="/agent-pear" highlight>
               Agent Pear
             </NavLink>
-            <NavLink to="/">Markets</NavLink>
+            <NavLink to="/markets">Markets</NavLink>
             <div className="flex items-center gap-3px">
-              <NavLink to="/">Earn</NavLink>
+              <NavLink to="/earn">Earn</NavLink>
               <ChevronDown className="w-3 h-3 text-text-secondary" />
             </div>
             <div className="flex items-center gap-3px">
@@ -57,13 +57,13 @@ export function LayoutHeader({ onMenuClick }: LayoutHeaderProps) {
 
         {/* Right: Actions */}
         <div className="flex items-center gap-5px">
-          {/* {isRestrictedRegion && ( */}
-          <div className="hidden md:flex items-center gap-3px p-5px rounded-lg text-xs bg-state-warning text-text-warning">
-            <MapPin className="w-3 h-3" />
-            Restricted Region Detected
-            <ChevronDown className="w-3 h-3 pl-2px" />
-          </div>
-          {/* )} */}
+          {isRestrictedRegion && (
+            <div className="hidden md:flex items-center gap-3px p-5px rounded-lg text-xs bg-state-warning text-text-warning">
+              <MapPin className="w-3 h-3" />
+              Restricted Region Detected
+              <ChevronDown className="w-3 h-3 pl-2px" />
+            </div>
+          )}
 
           {isWalletConnected && (
             <Button

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { colors } from '@/lib/design-tokens'
-import { noConnection, poorConnection, stableConnection } from './ui/svgIcons'
+import { NoConnection, PoorConnection, StableConnection } from './ui/svgIcons'
 
 type ConnectionStatus = 'none' | 'stable' | 'poor'
 
@@ -12,12 +12,12 @@ export function LayoutFooter() {
   const getConnectionColor = () => {
     switch (connectionStatus) {
       case 'stable':
-        return stableConnection()
+        return StableConnection
       case 'poor':
-        return poorConnection()
+        return PoorConnection
       case 'none':
       default:
-        return noConnection()
+        return NoConnection
     }
   }
 
@@ -52,7 +52,7 @@ export function LayoutFooter() {
   }
 
   return (
-    <footer className="fixed bottom-0 flex items-center justify-between left-0 right-0 border-t px-9px py-4px bg-bg-base border-border-default">
+    <footer className="fixed bottom-0 flex items-center justify-between left-0 right-0 border-t px-9px py-4px bg-bg-raised border-border-default">
       <div className="flex items-center gap-4">
         <button className="px-3 py-1.5 rounded text-xs font-medium bg-brand-secondary text-brand-primary">
           Withdraw Funds

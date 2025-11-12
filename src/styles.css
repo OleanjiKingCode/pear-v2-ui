@@ -10,18 +10,38 @@
 body {
   @apply m-0;
   font-family:
-    -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
-    'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    'Geist',
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    'Roboto',
+    'Oxygen',
+    'Ubuntu',
+    'Cantarell',
+    'Fira Sans',
+    'Droid Sans',
+    'Helvetica Neue',
+    sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
   font-family:
-    source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+    'Geist Mono', source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
 }
 
 :root {
+  /* Font families */
+  --font-geist:
+    'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  --font-geist-mono:
+    'Geist Mono', source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+
   --background: oklch(1 0 0);
   --foreground: oklch(0.141 0.005 285.823);
   --card: oklch(1 0 0);
@@ -70,6 +90,9 @@ code {
   --spacing-10px: 20px;
   --spacing-11px: 24px;
   --spacing-12px: 32px;
+  --spacing-13px: 40px;
+  --spacing-14px: 48px;
+  --spacing-15px: 64px;
 
   /* Radius tokens from design system */
   --radius-none: 0px;
@@ -159,9 +182,9 @@ code {
   --state-warning: #f59e0b33;
   --state-warning-hover: #f59e0b0d;
   --state-info: #0891b2;
-  --state-long: #14532d66;
+  --state-long-default: #14532d66;
   --state-long-hover: #14532d33;
-  --state-short: #7f1d1d66;
+  --state-short-default: #7f1d1d66;
   --state-short-hover: #7f1d1d4d;
 
   /* Button colors */
@@ -229,6 +252,10 @@ code {
 }
 
 @theme inline {
+  /* Font families */
+  --font-sans: var(--font-geist);
+  --font-mono: var(--font-geist-mono);
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -276,6 +303,9 @@ code {
   --spacing-10px: var(--spacing-10px);
   --spacing-11px: var(--spacing-11px);
   --spacing-12px: var(--spacing-12px);
+  --spacing-13px: var(--spacing-13px);
+  --spacing-14px: var(--spacing-14px);
+  --spacing-15px: var(--spacing-15px);
 
   /* Radius tokens */
   --radius-none: var(--radius-none);
@@ -302,6 +332,14 @@ code {
   --line-height-body-2xs: var(--line-height-body-2xs);
   --line-height-body-3xs: var(--line-height-body-3xs);
 
+  /* Text size utilities for body */
+  --text-body-lg: 18px;
+  --text-body-md: 16px;
+  --text-body-sm: 14px;
+  --text-body-xs: 12px;
+  --text-body-2xs: 10px;
+  --text-body-3xs: 8px;
+
   /* Typography - font size tokens for headings */
   --font-size-heading-h1: var(--font-size-heading-h1);
   --font-size-heading-h2: var(--font-size-heading-h2);
@@ -318,6 +356,14 @@ code {
   --line-height-heading-h5: var(--line-height-heading-h5);
   --line-height-heading-h6: var(--line-height-heading-h6);
 
+  /* Text size utilities for headings */
+  --text-heading-h1: 48px;
+  --text-heading-h2: 36px;
+  --text-heading-h3: 32px;
+  --text-heading-h4: 30px;
+  --text-heading-h5: 24px;
+  --text-heading-h6: 20px;
+
   /* Typography - font size tokens for labels */
   --font-size-label-lg: var(--font-size-label-lg);
   --font-size-label-md: var(--font-size-label-md);
@@ -329,6 +375,12 @@ code {
   --line-height-label-md: var(--line-height-label-md);
   --line-height-label-sm: var(--line-height-label-sm);
   --line-height-label-xs: var(--line-height-label-xs);
+
+  /* Text size utilities for labels */
+  --text-label-lg: 18px;
+  --text-label-md: 14px;
+  --text-label-sm: 12px;
+  --text-label-xs: 10px;
 
   /* Brand colors */
   --color-brand-primary: var(--brand-primary);
@@ -369,9 +421,9 @@ code {
   --color-state-warning: var(--state-warning);
   --color-state-warning-hover: var(--state-warning-hover);
   --color-state-info: var(--state-info);
-  --color-state-long: var(--state-long);
+  --color-state-long-default: var(--state-long-default);
   --color-state-long-hover: var(--state-long-hover);
-  --color-state-short: var(--state-short);
+  --color-state-short-default: var(--state-short-default);
   --color-state-short-hover: var(--state-short-hover);
 
   /* Button colors */
@@ -410,4 +462,18 @@ code {
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* Shimmer animation */
+@keyframes shimmer {
+  0% {
+    background-position: -100% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.animate-shimmer {
+  animation: shimmer var(--shimmer-duration, 3s) infinite linear;
 }
