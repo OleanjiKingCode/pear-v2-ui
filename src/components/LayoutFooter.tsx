@@ -52,9 +52,9 @@ export function LayoutFooter() {
   }
 
   return (
-    <footer className="fixed bottom-0 flex items-center justify-between left-0 right-0 border-t px-9px py-4px bg-bg-raised border-border-default">
+    <footer className="hidden lg:flex fixed bottom-0 items-center justify-between left-0 right-0 border-t px-9px py-4px bg-bg-raised border-border-default">
       <div className="flex items-center gap-4">
-        <button className="px-3 py-1.5 rounded text-xs font-medium bg-brand-secondary text-brand-primary">
+        <button className="px-3 py-1.5 rounded text-xs font-medium bg-brand-secondary hover:bg-btn-secondary-hover disabled:bg-btn-secondary-disabled text-brand-primary transition-colors">
           Withdraw Funds
         </button>
 

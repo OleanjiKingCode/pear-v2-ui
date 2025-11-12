@@ -41,7 +41,7 @@ function HomePage() {
           </p>
           <div className="flex gap-4">
             <Link to="/vaults">
-              <Button size="lg" className="bg-brand-primary text-text-inverse">
+              <Button size="lg" className="bg-brand-primary hover:bg-btn-primary-hover disabled:bg-btn-primary-disabled text-text-inverse transition-colors">
                 Explore Vaults
               </Button>
             </Link>
@@ -49,7 +49,7 @@ function HomePage() {
               <Button 
                 size="lg" 
                 variant="outline"
-                className="border-border-default bg-brand-secondary text-brand-primary"
+                className="border-border-default bg-brand-secondary hover:bg-btn-secondary-hover disabled:bg-btn-secondary-disabled text-brand-primary transition-colors"
               >
                 Start Trading
               </Button>

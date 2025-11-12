@@ -1,7 +1,10 @@
 import { useState } from 'react'
-import { Bell, Settings, Menu, ChevronDown, MapPin } from 'lucide-react'
+import { Settings, Menu, ChevronDown, MapPin } from 'lucide-react'
 import { Link } from '@tanstack/react-router'
 import { Button } from '@/components/ui/button'
+import { NotificationIcon } from './ui/svgIcons'
+import { SettingsPopover } from './SettingsPopover'
+import { ShimmerButton } from './ui/shimmer-button'
 
 interface LayoutHeaderProps {
   onMenuClick?: () => void
@@ -10,19 +13,21 @@ interface LayoutHeaderProps {
 export function LayoutHeader({ onMenuClick }: LayoutHeaderProps) {
   const [isWalletConnected, setIsWalletConnected] = useState(false)
   const [selectedNetwork] = useState<'arbitrum' | 'base'>('base')
-  const [notificationCount] = useState(4)
+  const [notificationCount] = useState(5)
   const [walletAddress] = useState('0xd4eb...53fc')
   const [hasWarning] = useState(false)
   const [isRestrictedRegion] = useState(false)
   return (
     <nav className="border-b bg-bg-raised border-border-default">
       <div className="flex items-center justify-between p-5px">
-        {/* Left: Logo and Nav Links */}
         <div className="flex items-center gap-10px">
-          {/* Logo */}
-          <Link to="/" className="flex items-center gap-2">
-            <img src="/pear.svg" alt="Pear Logo" className="w-8 h-8" />
-            <span className="font-bold text-lg text-text-primary">PEAR</span>
+          <Link to="/" className="flex items-center gap-5px">
+            <div className="flex items-center space-x-3px">
+              <img src="/pear.svg" alt="Pear Logo" className="w-8 h-8" />
+              <span className="font-semibold text-lg text-text-primary">
+                PEAR
+              </span>
+            </div>
             <ChevronDown className="w-4 h-4 text-text-secondary" />
           </Link>
 
@@ -48,11 +53,17 @@ export function LayoutHeader({ onMenuClick }: LayoutHeaderProps) {
           {/* Restricted Region Badge */}
 
           {/* Hypear Point Badge */}
-          {!isRestrictedRegion && (
-            <div className="hidden md:flex px-3 py-1 rounded-full text-xs bg-bg-elevated text-brand-accent">
+
+          <ShimmerButton
+            className=" hidden md:flex px-2 py-1.5  hover:!bg-[#153029]"
+            shimmerColor="#14B8A6"
+            background="#0f221d"
+            shimmerDuration="1s"
+          >
+            <span className="text-[#14B8A6] text-[10px] font-semibold whitespace-nowrap">
               Hypear Point 2
-            </div>
-          )}
+            </span>
+          </ShimmerButton>
         </div>
 
         {/* Right: Actions */}
@@ -65,20 +76,13 @@ export function LayoutHeader({ onMenuClick }: LayoutHeaderProps) {
             </div>
           )}
 
-          {isWalletConnected && (
-            <Button
-              variant="outline"
-              size="sm"
-              className="hidden md:inline-flex px-11px py-5px rounded-lg text-text-button border-border-default bg-brand-secondary"
-            >
-              Deposit
-            </Button>
-          )}
+          <Button className="hidden md:inline-flex px-11px py-5px h-[33px] rounded-lg text-text-button border-border-default bg-brand-secondary hover:bg-btn-secondary-hover disabled:bg-btn-secondary-disabled transition-colors">
+            Deposit
+          </Button>
 
           {!isWalletConnected ? (
             <Button
-              size="sm"
-              className="hidden md:inline-flex px-11px py-5px rounded-lg bg-brand-primary text-text-inverse"
+              className="hidden md:inline-flex px-11px py-5px h-[33px] rounded-lg bg-brand-primary hover:bg-btn-primary-hover disabled:bg-btn-primary-disabled text-text-inverse transition-colors"
               onClick={() => setIsWalletConnected(true)}
             >
               Connect Wallet
@@ -125,22 +129,22 @@ export function LayoutHeader({ onMenuClick }: LayoutHeaderProps) {
             </div>
           )}
 
-          <button className="relative p-5px rounded-lg hover:opacity-80 transition-opacity bg-btn-tertiary-active">
-            <Bell className="w-4 h-4 text-icon-active" />
+          <div className="relative p-5px w-[33px] h-[33px] flex items-center justify-center rounded-lg transition-opacity bg-btn-tertiary-active hover:bg-btn-tertiary-hover disabled:bg-btn-tertiary-disabled">
+            {NotificationIcon}
             {notificationCount > 0 && (
-              <>
-                <div className="absolute top-0 right-1 px-3px py-2px rounded-full bg-icon-warn flex items-center justify-center">
-                  <span className="text-(length:--font-size-body-3xs) font-normal text-text-inverse">
-                    {notificationCount}
-                  </span>
-                </div>
-              </>
+              <div className="absolute top-1 right-1 px-3px py-2px h-3 w-[14px] rounded-full bg-icon-warn flex items-center justify-center">
+                <span className="text-(length:--font-size-body-3xs) font-normal text-text-inverse">
+                  {notificationCount}
+                </span>
+              </div>
             )}
-          </button>
+          </div>
 
-          <button className="p-5px rounded-lg hover:opacity-80 transition-opacity bg-btn-tertiary-active">
-            <Settings className="w-4 h-4 text-icon-active" />
-          </button>
+          <SettingsPopover>
+            <button className="p-5px w-[33px] h-[33px] flex items-center justify-center rounded-lg transition-opacity bg-btn-tertiary-active hover:bg-btn-tertiary-hover disabled:bg-btn-tertiary-disabled">
+              <Settings className="w-4 h-4 text-icon-active" />
+            </button>
+          </SettingsPopover>
 
           {/* Mobile Menu Button */}
           <button
@@ -176,7 +180,7 @@ function NavLink({
     <Link
       to={to}
       activeOptions={{ exact: to === '/' }}
-      className="rounded-lg text-sm font-medium transition-all"
+      className="rounded-lg text-label-sm font-medium transition-all"
     >
       {({ isActive }) => (
         <span
