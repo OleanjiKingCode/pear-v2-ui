@@ -8,6 +8,8 @@ import { NotificationsPopover } from './NotificationsPopover'
 import { WalletPopover } from './WalletPopover'
 import { RestrictedRegionPopover } from './RestrictedRegionPopover'
 import { PearLogoPopover, type PearVersion } from './PearLogoPopover'
+import { EarnPopover } from './EarnPopover'
+import { MorePopover } from './MorePopover'
 import { ShimmerButton } from './ui/shimmer-button'
 import { DepositModal } from './DepositModal'
 import { NavigationDrawer } from './NavigationDrawer'
@@ -26,6 +28,8 @@ export function LayoutHeader({ onMenuClick }: LayoutHeaderProps) {
   const [isWalletPopoverOpen, setIsWalletPopoverOpen] = useState(false)
   const [pearVersion, setPearVersion] = useState<PearVersion>('Legacy')
   const [isPearPopoverOpen, setIsPearPopoverOpen] = useState(false)
+  const [isEarnPopoverOpen, setIsEarnPopoverOpen] = useState(false)
+  const [isMorePopoverOpen, setIsMorePopoverOpen] = useState(false)
   const [isDepositOpen, setIsDepositOpen] = useState(false)
   const [isDrawerOpen, setIsDrawerOpen] = useState(false)
   return (
@@ -69,16 +73,32 @@ export function LayoutHeader({ onMenuClick }: LayoutHeaderProps) {
                 Agent Pear
               </NavLink>
               <NavLink to="/markets">Markets</NavLink>
-              <div className="flex items-center gap-3px">
-                <NavLink to="/earn">Earn</NavLink>
-                <ChevronDown className="w-3 h-3 text-text-secondary" />
-              </div>
-              <div className="flex items-center gap-3px">
-                <NavLink to="/">More</NavLink>
-                <ChevronDown className="w-3 h-3 text-text-secondary" />
-              </div>
 
-              <NavLink to="/">
+              <EarnPopover
+                isOpen={isEarnPopoverOpen}
+                onOpenChange={setIsEarnPopoverOpen}
+              >
+                <button className="flex items-center gap-3px rounded-lg text-label-sm font-medium transition-all text-text-tertiary hover:text-text-primary">
+                  <span>Earn</span>
+                  <ChevronDown
+                    className={`w-3 h-3 text-text-secondary transition-transform ${isEarnPopoverOpen ? 'rotate-180' : ''}`}
+                  />
+                </button>
+              </EarnPopover>
+
+              <MorePopover
+                isOpen={isMorePopoverOpen}
+                onOpenChange={setIsMorePopoverOpen}
+              >
+                <button className="flex items-center gap-3px rounded-lg text-label-sm font-medium transition-all text-text-tertiary hover:text-text-primary">
+                  <span>More</span>
+                  <ChevronDown
+                    className={`w-3 h-3 text-text-secondary transition-transform ${isMorePopoverOpen ? 'rotate-180' : ''}`}
+                  />
+                </button>
+              </MorePopover>
+
+              <Link to="/">
                 <ShimmerButton
                   className=" hidden md:flex px-2 py-1.5  hover:bg-[#153029]!"
                   shimmerColor="#14B8A6"
@@ -89,7 +109,7 @@ export function LayoutHeader({ onMenuClick }: LayoutHeaderProps) {
                     Hypear Point 2
                   </span>
                 </ShimmerButton>
-              </NavLink>
+              </Link>
             </div>
           </div>
 
