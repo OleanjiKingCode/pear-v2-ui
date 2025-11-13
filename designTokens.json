@@ -4611,6 +4611,19 @@
             "exportKey": "variables"
           }
         }
+      },
+      "prim": {
+        "description": "Primary border color",
+        "type": "color",
+        "value": "#222822ff",
+        "extensions": {
+          "org.lukasoppermann.figmaDesignTokens": {
+            "collection": "Semantic Color Tokens",
+            "scopes": ["STROKE_COLOR"],
+            "variableId": "VariableID:custom:prim",
+            "exportKey": "variables"
+          }
+        }
       }
     },
     "states": {

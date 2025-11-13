@@ -160,6 +160,13 @@ code {
   --text-loss: #f87171;
   --text-long: #bbf7d0;
   --text-short: #fecaca;
+  --text-cta: #a2db5c;
+
+  /* Engine colors */
+  --engines-hl-text: #2dd4bf;
+  --engines-hl-bg: #042f2e;
+  --engines-symm-text: #fda4af;
+  --engines-symm-bg: #4c0519;
 
   /* Background colors */
   --bg-base: #0a0a0a;
@@ -175,6 +182,7 @@ code {
   --border-strong: #fafafa;
   --border-high: #a2db5c;
   --border-warning: #f59e0b;
+  --border-prim: #222822;
 
   /* State colors */
   --state-success: #22c55e;
@@ -414,6 +422,7 @@ code {
   --color-border-strong: var(--border-strong);
   --color-border-high: var(--border-high);
   --color-border-warning: var(--border-warning);
+  --color-border-prim: var(--border-prim);
 
   /* State colors */
   --color-state-success: var(--state-success);
@@ -476,4 +485,45 @@ code {
 
 .animate-shimmer {
   animation: shimmer var(--shimmer-duration, 3s) infinite linear;
+}
+
+/* Custom scrollbar styles */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: var(--border-default);
+  border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: var(--border-default);
+}
+
+/* Firefox scrollbar */
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-default) transparent;
+}
+
+/* Engine color utilities */
+.text-engine-hl {
+  color: var(--engines-hl-text);
+}
+
+.text-engine-symm {
+  color: var(--engines-symm-text);
+}
+
+.bg-engine-hl {
+  background-color: var(--engines-hl-bg);
+}
+
+.bg-engine-symm {
+  background-color: var(--engines-symm-bg);
 }

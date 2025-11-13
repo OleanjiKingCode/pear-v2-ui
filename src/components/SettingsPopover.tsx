@@ -6,6 +6,12 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover'
 import { Button } from '@/components/ui/button'
+import {
+  LanguageIcon,
+  NumbersFormat,
+  PaletteIcon,
+  SoundIcon,
+} from './ui/svgIcons'
 
 interface SettingsPopoverProps {
   children: React.ReactNode
@@ -49,89 +55,94 @@ export function SettingsPopover({ children }: SettingsPopoverProps) {
   ]
 
   const renderMainView = () => (
-    <div className="w-[360px]">
-      {/* Number Formatting */}
-      <button
+    <div className="">
+      <div
         onClick={() => setView('numberFormat')}
-        className="w-full flex items-center justify-between px-4 py-3 hover:bg-bg-elevated transition-colors"
+        className="w-full flex items-center justify-between h-[33px] px-3px py-5px rounded-md hover:bg-btn-tertiary-hover transition-colors cursor-pointer"
       >
-        <div className="flex items-center gap-3">
-          <div className="text-brand-accent text-sm font-medium">
-            01
-            <br />
-            10
-          </div>
-          <span className="text-text-secondary text-sm">Number Formatting</span>
+        <div className="flex items-center gap-5px">
+          <div className="pl-1">{NumbersFormat}</div>
+          <span className="text-text-tertiary text-label-sm font-medium">
+            Number Formatting
+          </span>
         </div>
-        <div className="flex items-center gap-2">
-          <span className="text-text-primary text-sm">{numberFormat}</span>
-          <ChevronRight className="w-4 h-4 text-text-secondary" />
+        <div className="flex items-center gap-5px">
+          <span className="text-text-primary text-label-sm">
+            {numberFormat}
+          </span>
+          <ChevronRight className="w-4 h-4 text-icon-subtle" />
         </div>
-      </button>
+      </div>
 
-      <div className="border-t border-border-default" />
+      <div className="border-t border-border-subtle my-5px" />
 
       {/* Language */}
-      <button
+      <div
         onClick={() => setView('language')}
-        className="w-full flex items-center justify-between px-4 py-3 bg-bg-elevated hover:bg-bg-raised transition-colors"
+        className="w-full flex items-center justify-between h-[33px] px-3px py-5px rounded-md hover:bg-btn-tertiary-hover transition-colors cursor-pointer"
       >
-        <div className="flex items-center gap-3">
-          <div className="text-brand-accent text-xl">🌐</div>
-          <span className="text-text-secondary text-sm">Language</span>
+        <div className="flex items-center gap-5px">
+          <div className="pl-1">{LanguageIcon}</div>
+          <span className="text-text-tertiary text-label-sm font-medium">
+            Language
+          </span>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-5px">
           {languageOptions.find((l) => l.name === language)?.flag && (
-            <span className="text-base">
+            <span className="text-label-sm text-secondary">
               {languageOptions.find((l) => l.name === language)?.flag}
             </span>
           )}
-          <span className="text-text-primary text-sm">{language}</span>
+          <span className="text-label-sm text-secondary">{language}</span>
           <ChevronRight className="w-4 h-4 text-text-secondary" />
         </div>
-      </button>
+      </div>
 
-      <div className="border-t border-border-default" />
+      <div className="border-t border-border-subtle my-5px" />
 
       {/* Sound */}
-      <button
-        onClick={() => setView('sound')}
-        className="w-full flex items-center justify-between px-4 py-3 hover:bg-bg-elevated transition-colors"
+      <div
+        // onClick={() => setView('sound')}
+        className="w-full flex items-center justify-between h-[33px] px-3px py-5px rounded-md hover:bg-btn-tertiary-hover transition-colors cursor-not-allowed"
       >
-        <div className="flex items-center gap-3">
-          <Volume2 className="w-5 h-5 text-brand-accent" />
-          <span className="text-text-secondary text-sm">Sound</span>
+        <div className="flex items-center gap-5px">
+          <div className="pl-1">{SoundIcon}</div>
+          <span className="text-text-tertiary text-label-sm font-medium">
+            Sound
+          </span>
         </div>
-        <div className="flex items-center gap-2">
-          <span className="text-text-tertiary text-sm">{soundEnabled}</span>
+        <div className="flex items-center gap-5px">
+          <span className="text-text-disabled text-label-sm">{soundEnabled}</span>
           <ChevronRight className="w-4 h-4 text-text-secondary" />
         </div>
-      </button>
+      </div>
 
-      <div className="border-t border-border-default" />
+      <div className="border-t border-border-subtle my-5px" />
 
       {/* Theme */}
-      <button
-        onClick={() => setView('theme')}
-        className="w-full flex items-center justify-between px-4 py-3 hover:bg-bg-elevated transition-colors"
+      <div
+        // onClick={() => setView('theme')}
+        className="w-full flex items-center justify-between h-[33px] px-3px py-5px rounded-md hover:bg-btn-tertiary-hover transition-colors cursor-not-allowed"
       >
-        <div className="flex items-center gap-3">
-          <Palette className="w-5 h-5 text-brand-accent" />
-          <span className="text-text-secondary text-sm">Theme</span>
+        <div className="flex items-center gap-5px">
+          <div className="pl-1">{PaletteIcon}</div>
+          <span className="text-text-tertiary text-label-sm font-medium">
+            Theme
+          </span>
         </div>
-        <div className="flex items-center gap-2">
-          <span className="text-text-tertiary text-sm">{theme}</span>
+        <div className="flex items-center gap-5px">
+          <span className="text-text-disabled text-label-sm">{theme}</span>
           <ChevronRight className="w-4 h-4 text-text-secondary" />
         </div>
-      </button>
+      </div>
 
-      <div className="border-t border-border-default" />
+      <div className="border-t border-border-default my-5px" />
 
       {/* Reset Layout */}
-      <div className="p-4">
+      <div className="">
         <Button
           onClick={handleReset}
-          className="w-full py-3 bg-bg-elevated hover:bg-bg-raised text-text-primary rounded-lg transition-colors"
+          className="w-full py-3 bg-btn-tertiary-active hover:bg-btn-tertiary-hover disabled:bg-btn-tertiary-disabled text-text-primary rounded-lg transition-colors"
         >
           Reset Layout
         </Button>
@@ -140,69 +151,88 @@ export function SettingsPopover({ children }: SettingsPopoverProps) {
   )
 
   const renderNumberFormatView = () => (
-    <div className="w-[360px]">
-      <div className="flex items-center gap-3 px-4 py-3 border-b border-border-default">
+    <div className="space-y-5px">
+      <div className="flex items-center h-6 pb-5px border-b border-border-default">
         <button
           onClick={() => setView('main')}
-          className="p-1 hover:bg-bg-elevated rounded"
+          className=" hover:bg-btn-tertiary-hover rounded cursor-pointer"
         >
-          <ChevronRight className="w-5 h-5 text-text-primary rotate-180" />
+          <ChevronRight className="w-5 h-5 text-icon-subtle rotate-180" />
         </button>
-        <h3 className="text-text-primary text-base font-medium">
-          Number Formatting
-        </h3>
+        <div className="w-full text-center -ml-2">
+          <h3 className="text-text-primary text-label-sm font-medium">
+            Number Formatting
+          </h3>
+        </div>
       </div>
 
-      <div className="py-2">
-        {numberFormatOptions.map((format) => (
-          <button
-            key={format}
-            onClick={() => {
-              setNumberFormat(format)
-              setView('main')
-            }}
-            className="w-full flex items-center justify-between px-4 py-3 hover:bg-bg-elevated transition-colors"
-          >
-            <span className="text-text-primary text-sm">{format}</span>
-            {numberFormat === format && (
-              <Check className="w-5 h-5 text-brand-accent" />
+      <div className="gap-5px">
+        {numberFormatOptions.map((format, i) => (
+          <div key={format} className="">
+            <button
+              onClick={() => {
+                setNumberFormat(format)
+                setView('main')
+              }}
+              className="w-full flex items-center h-[33px] rounded-md cursor-pointer justify-between px-3px py-5px hover:bg-bg-overlay transition-colors"
+            >
+              <span className="text-text-secondary text-label-sm">
+                {format}
+              </span>
+              {numberFormat === format && (
+                <Check className="w-5 h-5 text-icon-cta" />
+              )}
+            </button>
+
+            {i + 1 < numberFormatOptions.length && (
+              <div className="border-b border-border-prim my-5px" />
             )}
-          </button>
+          </div>
         ))}
       </div>
     </div>
   )
 
   const renderLanguageView = () => (
-    <div className="w-[360px]">
-      <div className="flex items-center gap-3 px-4 py-3 border-b border-border-default">
+    <div className="space-y-5px">
+      <div className="flex items-center h-6 pb-5px border-b border-border-default">
         <button
           onClick={() => setView('main')}
-          className="p-1 hover:bg-bg-elevated rounded"
+          className=" hover:bg-btn-tertiary-hover rounded cursor-pointer"
         >
-          <ChevronRight className="w-5 h-5 text-text-primary rotate-180" />
+          <ChevronRight className="w-5 h-5 text-icon-subtle rotate-180" />
         </button>
-        <h3 className="text-text-primary text-base font-medium">Language</h3>
+        <div className="w-full text-center -ml-2">
+          <h3 className="text-text-primary text-label-sm font-medium">
+            Language
+          </h3>
+        </div>
       </div>
 
-      <div className="py-2">
-        {languageOptions.map((lang) => (
-          <button
-            key={lang.name}
-            onClick={() => {
-              setLanguage(lang.name)
-              setView('main')
-            }}
-            className="w-full flex items-center justify-between px-4 py-3 hover:bg-bg-elevated transition-colors"
-          >
-            <div className="flex items-center gap-3">
-              <span className="text-base">{lang.flag}</span>
-              <span className="text-text-primary text-sm">{lang.name}</span>
-            </div>
-            {language === lang.name && (
-              <Check className="w-5 h-5 text-brand-accent" />
+      <div className="gap-5px">
+        {languageOptions.map((lang, i) => (
+          <div key={lang.name} className="">
+            <button
+              onClick={() => {
+                setLanguage(lang.name)
+                setView('main')
+              }}
+              className="w-full flex items-center h-[33px] rounded-md cursor-pointer justify-between px-3px py-5px hover:bg-bg-overlay transition-colors"
+            >
+              <div className="flex items-center gap-3px">
+                <span className="text-base">{lang.flag}</span>
+                <span className="text-text-secondary text-label-sm">
+                  {lang.name}
+                </span>
+              </div>
+              {language === lang.name && (
+                <Check className="w-5 h-5 text-icon-cta" />
+              )}
+            </button>
+            {i + 1 < languageOptions.length && (
+              <div className="border-b border-border-prim my-5px" />
             )}
-          </button>
+          </div>
         ))}
       </div>
     </div>
@@ -277,7 +307,10 @@ export function SettingsPopover({ children }: SettingsPopoverProps) {
       <PopoverTrigger asChild>{children}</PopoverTrigger>
       <PopoverContent
         align="end"
-        className="p-0 bg-bg-raised border border-border-default rounded-xl shadow-lg"
+        className="p-5px border border-border-default rounded-lg overflow-hidden w-[300px] mt-1"
+        style={{
+          background: 'rgba(10, 10, 10, 0.90)',
+        }}
       >
         {view === 'main' && renderMainView()}
         {view === 'numberFormat' && renderNumberFormatView()}

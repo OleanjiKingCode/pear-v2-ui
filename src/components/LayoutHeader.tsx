@@ -4,6 +4,7 @@ import { Link } from '@tanstack/react-router'
 import { Button } from '@/components/ui/button'
 import { NotificationIcon } from './ui/svgIcons'
 import { SettingsPopover } from './SettingsPopover'
+import { NotificationsPopover } from './NotificationsPopover'
 import { ShimmerButton } from './ui/shimmer-button'
 
 interface LayoutHeaderProps {
@@ -129,16 +130,18 @@ export function LayoutHeader({ onMenuClick }: LayoutHeaderProps) {
             </div>
           )}
 
-          <div className="relative p-5px w-[33px] h-[33px] flex items-center justify-center rounded-lg transition-opacity bg-btn-tertiary-active hover:bg-btn-tertiary-hover disabled:bg-btn-tertiary-disabled">
-            {NotificationIcon}
-            {notificationCount > 0 && (
-              <div className="absolute top-1 right-1 px-3px py-2px h-3 w-[14px] rounded-full bg-icon-warn flex items-center justify-center">
-                <span className="text-(length:--font-size-body-3xs) font-normal text-text-inverse">
-                  {notificationCount}
-                </span>
-              </div>
-            )}
-          </div>
+          <NotificationsPopover>
+            <button className="relative p-5px w-[33px] h-[33px] flex items-center justify-center rounded-lg transition-opacity bg-btn-tertiary-active hover:bg-btn-tertiary-hover disabled:bg-btn-tertiary-disabled">
+              {NotificationIcon}
+              {notificationCount > 0 && (
+                <div className="absolute top-1 right-1 px-3px py-2px h-3 w-[14px] rounded-full bg-icon-warn flex items-center justify-center">
+                  <span className="text-(length:--font-size-body-3xs) font-normal text-text-inverse">
+                    {notificationCount}
+                  </span>
+                </div>
+              )}
+            </button>
+          </NotificationsPopover>
 
           <SettingsPopover>
             <button className="p-5px w-[33px] h-[33px] flex items-center justify-center rounded-lg transition-opacity bg-btn-tertiary-active hover:bg-btn-tertiary-hover disabled:bg-btn-tertiary-disabled">
