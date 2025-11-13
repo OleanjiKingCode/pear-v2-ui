@@ -89,7 +89,7 @@ export function LayoutFooter() {
         >
           <img src="/agentPearWithBg.svg" alt="Pear Logo" className="w-4 h-4" />
           <span
-            className="text-text-inverse font-medium"
+            className="text-text-inverse font-medium text-label-xs"
             style={{
               background: 'linear-gradient(90deg, #a2db5c 0%, #29f8ff 100%)',
               WebkitBackgroundClip: 'text',
@@ -99,7 +99,7 @@ export function LayoutFooter() {
           >
             Trade Signals
           </span>
-          <span className="rounded text-xs font-semibold text-text-primary">
+          <span className="rounded text-label-xs font-semibold text-text-primary">
             16
           </span>
         </button>

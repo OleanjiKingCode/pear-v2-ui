@@ -648,7 +648,11 @@ function VaultsPage() {
             <div className="mb-11px flex flex-col gap-6">
               <div className="flex items-center gap-5px">
                 <div className="w-6 h-6 rounded-full flex items-center justify-center">
-                  <img src="/usdc.svg" alt="USDC Logo" className="w-5 h-5" />
+                  <img
+                    src="/tokens/usdc.svg"
+                    alt="USDC Logo"
+                    className="w-5 h-5"
+                  />
                 </div>
                 <span className="text-heading-h6 font-medium text-text-primary">
                   $342,096.87
@@ -772,7 +776,7 @@ function VaultsPage() {
                   <div className="flex items-center gap-5px">
                     <div className="w-6 h-6 rounded-full flex items-center justify-center">
                       <img
-                        src="/usdc.svg"
+                        src="/tokens/usdc.svg"
                         alt="USDC Logo"
                         className="w-5 h-5"
                       />

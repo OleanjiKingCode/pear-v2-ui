@@ -163,10 +163,10 @@ code {
   --text-cta: #a2db5c;
 
   /* Engine colors */
-  --engines-hl-text: #2dd4bf;
-  --engines-hl-bg: #042f2e;
-  --engines-symm-text: #fda4af;
-  --engines-symm-bg: #4c0519;
+  --text-hl: #2dd4bf;
+  --bg-hl: #042f2e;
+  --text-symm: #fda4af;
+  --bg-symm: #4c0519;
 
   /* Background colors */
   --bg-base: #0a0a0a;
@@ -407,6 +407,8 @@ code {
   --color-text-loss: var(--text-loss);
   --color-text-long: var(--text-long);
   --color-text-short: var(--text-short);
+  --color-text-hl: var(--text-hl);
+  --color-text-symm: var(--text-symm);
 
   /* Background colors */
   --color-bg-base: var(--bg-base);
@@ -415,6 +417,8 @@ code {
   --color-bg-overlay: var(--bg-overlay);
   --color-bg-elevated: var(--bg-elevated);
   --color-bg-subtle: var(--bg-subtle);
+  --color-bg-hl: var(--bg-hl);
+  --color-bg-symm: var(--bg-symm);
 
   /* Border colors */
   --color-border-default: var(--border-default);
@@ -509,21 +513,4 @@ code {
 .custom-scrollbar {
   scrollbar-width: thin;
   scrollbar-color: var(--border-default) transparent;
-}
-
-/* Engine color utilities */
-.text-engine-hl {
-  color: var(--engines-hl-text);
-}
-
-.text-engine-symm {
-  color: var(--engines-symm-text);
-}
-
-.bg-engine-hl {
-  background-color: var(--engines-hl-bg);
-}
-
-.bg-engine-symm {
-  background-color: var(--engines-symm-bg);
 }

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { ChevronRight, Check, Volume2, Palette } from 'lucide-react'
+import { ChevronRight, Check } from 'lucide-react'
 import {
   Popover,
   PopoverContent,
@@ -112,7 +112,9 @@ export function SettingsPopover({ children }: SettingsPopoverProps) {
           </span>
         </div>
         <div className="flex items-center gap-5px">
-          <span className="text-text-disabled text-label-sm">{soundEnabled}</span>
+          <span className="text-text-disabled text-label-sm">
+            {soundEnabled}
+          </span>
           <ChevronRight className="w-4 h-4 text-text-secondary" />
         </div>
       </div>
@@ -144,7 +146,7 @@ export function SettingsPopover({ children }: SettingsPopoverProps) {
           onClick={handleReset}
           className="w-full py-3 bg-btn-tertiary-active hover:bg-btn-tertiary-hover disabled:bg-btn-tertiary-disabled text-text-primary rounded-lg transition-colors"
         >
-          Reset Layout
+          <span className="text-label-sm">Reset Layout</span>
         </Button>
       </div>
     </div>
