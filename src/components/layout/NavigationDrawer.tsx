@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import { X, Copy, ExternalLink, Settings, Zap } from 'lucide-react'
 import { Link } from '@tanstack/react-router'
-import { Button } from './ui/button'
-import { DepositModal } from './DepositModal'
-import { WithdrawModal } from './WithdrawModal'
+import { Button } from '@/components/ui/button'
+import { DepositModal } from '@/components/modals/DepositModal'
+import { WithdrawModal } from '@/components/modals/WithdrawModal'
 import {
   Analytics,
   DocsNavIcon,
@@ -15,10 +15,10 @@ import {
   StakingIcon,
   TradeIcon,
   VaultsIcon,
-} from './ui/svgIcons'
-import { type PearVersion } from './PearLogoPopover'
-import { SettingsPopover } from './SettingsPopover'
-import { ShimmerButton } from './ui/shimmer-button'
+} from '@/components/ui/svgIcons'
+import { type PearVersion } from '@/components/popovers/PearLogoPopover'
+import { SettingsPopover } from '@/components/popovers/SettingsPopover'
+import { ShimmerButton } from '@/components/ui/shimmer-button'
 
 interface NavigationDrawerProps {
   isOpen: boolean

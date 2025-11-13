@@ -11,7 +11,7 @@ import {
   NumbersFormat,
   PaletteIcon,
   SoundIcon,
-} from './ui/svgIcons'
+} from '@/components/ui/svgIcons'
 
 interface SettingsPopoverProps {
   children: React.ReactNode

@@ -12,7 +12,7 @@ import {
   SlIcon,
   TpIcon,
   WithdrawNotifIcon,
-} from './ui/svgIcons'
+} from '@/components/ui/svgIcons'
 
 interface NotificationsPopoverProps {
   children: React.ReactNode

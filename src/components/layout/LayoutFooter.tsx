@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { colors } from '@/lib/design-tokens'
-import { NoConnection, PoorConnection, StableConnection } from './ui/svgIcons'
+import { NoConnection, PoorConnection, StableConnection } from '@/components/ui/svgIcons'
 
 type ConnectionStatus = 'none' | 'stable' | 'poor'
 

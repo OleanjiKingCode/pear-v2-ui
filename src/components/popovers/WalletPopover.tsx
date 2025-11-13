@@ -4,8 +4,8 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover'
-import { CheckIcon } from './ui/svgIcons'
-import { Button } from './ui/button'
+import { CheckIcon } from '@/components/ui/svgIcons'
+import { Button } from '@/components/ui/button'
 import {
   Copy,
   Power,
@@ -14,11 +14,11 @@ import {
   ArrowRightLeft,
   X,
 } from 'lucide-react'
-import { CreateAccountModal } from './CreateAccountModal'
-import { TransferModal } from './TransferModal'
-import { DeleteAccountModal } from './DeleteAccountModal'
-import { DepositModal } from './DepositModal'
-import { WithdrawModal } from './WithdrawModal'
+import { CreateAccountModal } from '@/components/modals/CreateAccountModal'
+import { TransferModal } from '@/components/modals/TransferModal'
+import { DeleteAccountModal } from '@/components/modals/DeleteAccountModal'
+import { DepositModal } from '@/components/modals/DepositModal'
+import { WithdrawModal } from '@/components/modals/WithdrawModal'
 
 type WalletType = 'connected' | 'vault' | null
 type NetworkType = 'hyperevm' | 'base' | 'abitrum' | null
