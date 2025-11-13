@@ -1,6 +1,10 @@
 import { useState } from 'react'
 import { colors } from '@/lib/design-tokens'
-import { NoConnection, PoorConnection, StableConnection } from '@/components/ui/svgIcons'
+import {
+  NoConnection,
+  PoorConnection,
+  StableConnection,
+} from '@/components/ui/svgIcons'
 
 type ConnectionStatus = 'none' | 'stable' | 'poor'
 
@@ -53,13 +57,13 @@ export function LayoutFooter() {
 
   return (
     <footer className="hidden lg:flex fixed bottom-0 items-center justify-between left-0 right-0 border-t px-9px py-4px bg-bg-raised border-border-default">
-      <div className="flex items-center gap-4">
-        <button className="px-3 py-1.5 rounded text-xs font-medium bg-brand-secondary hover:bg-btn-secondary-hover disabled:bg-btn-secondary-disabled text-brand-primary transition-colors">
+      <div className="flex items-center gap-9px">
+        <button className="px-5px py-3px rounded-md text-label-xs font-medium bg-brand-secondary hover:bg-btn-secondary-hover disabled:bg-btn-secondary-disabled text-brand-primary transition-colors">
           Withdraw Funds
         </button>
 
-        <div className="flex items-center gap-3px text-xs">
-          <span className="text-text-secondary underline decoration-dotted">
+        <div className="flex items-center gap-3px ">
+          <span className="text-text-secondary text-body-xs underline decoration-dotted">
             uPNL:
           </span>
           <span
@@ -69,8 +73,8 @@ export function LayoutFooter() {
             {upnl}
           </span>
         </div>
-        <div className="flex items-center gap-3px text-xs">
-          <span className="text-text-secondary underline decoration-dotted">
+        <div className="flex items-center gap-3px ">
+          <span className="text-text-secondary underline text-body-xs decoration-dotted">
             Avl margin:
           </span>
           <span className="font-mono font-semibold text-text-primary">

@@ -30,7 +30,7 @@ export function RestrictedRegionPopover({
             <MapPin className="w-3 h-3" />
             <span className=" hidden xl:flex">Restricted Region Detected</span>
             <ChevronDown
-              className={`w-3 h-3 pl-2px hidden xl:flex transition-transform ${isOpen ? 'rotate-180' : ''}`}
+              className={`w-3 h-3 pl-2px hidden xl:flex  text-icon-warn transition-transform ${isOpen ? 'rotate-180' : ''}`}
             />
           </div>
         )}

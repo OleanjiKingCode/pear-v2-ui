@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import { X, Info } from 'lucide-react'
-import { Button } from './ui/button'
-import { CheckIcon } from './ui/svgIcons'
+import { Button } from '@/components/ui/button'
+import { CheckIcon } from '@/components/ui/svgIcons'
+import { BottomSheetModal } from '@/components/ui/bottom-sheet-modal'
 
 interface DepositModalProps {
   isOpen: boolean
@@ -30,17 +31,8 @@ export function DepositModal({ isOpen, onClose }: DepositModalProps) {
   }
 
   return (
-    <>
-      {/* Backdrop */}
-      <div
-        className="fixed inset-0 bg-black/50 z-50"
-        onClick={onClose}
-      />
-
-      {/* Modal */}
-      <div className="fixed inset-0 z-50 flex items-center justify-center pointer-events-none">
-        <div className="w-full max-w-[660px] bg-bg-overlay border border-border-default rounded-lg pointer-events-auto mx-13px">
-          <div className="p-13px space-y-13px">
+    <BottomSheetModal isOpen={isOpen} onClose={onClose} maxWidth="660px">
+      <div className="p-13px space-y-13px">
             {/* Header */}
             <div className="flex items-center justify-between pb-5px border-b border-border-default">
               <h2 className="text-label-lg font-semibold text-text-primary">
@@ -179,10 +171,8 @@ export function DepositModal({ isOpen, onClose }: DepositModalProps) {
                 </p>
               </div>
             )}
-          </div>
-        </div>
       </div>
-    </>
+    </BottomSheetModal>
   )
 }
 
