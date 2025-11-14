@@ -3,6 +3,7 @@ import { X, ChevronDown, Info } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { CheckIcon } from '@/components/ui/svgIcons'
 import { BottomSheetModal } from '@/components/ui/bottom-sheet-modal'
+import { Tabs } from '@/components/ui/tabs'
 
 interface WithdrawModalProps {
   isOpen: boolean
@@ -61,28 +62,24 @@ export function WithdrawModal({ isOpen, onClose }: WithdrawModalProps) {
             </div>
 
             {/* Engine Type Tabs */}
-            <div className="flex gap-5px">
-              <button
-                onClick={() => setSelectedEngine('hyperliquid')}
-                className={`flex-1 px-11px py-5px h-[33px] rounded-lg text-label-sm font-medium transition-colors ${
-                  selectedEngine === 'hyperliquid'
-                    ? 'bg-brand-accent text-text-inverse'
-                    : 'bg-btn-tertiary-active text-text-tertiary hover:bg-btn-tertiary-hover'
-                }`}
-              >
-                HYPERLIQUID
-              </button>
-              <button
-                onClick={() => setSelectedEngine('symm')}
-                className={`flex-1 px-11px py-5px h-[33px] rounded-lg text-label-sm font-medium transition-colors ${
-                  selectedEngine === 'symm'
-                    ? 'bg-[#7f1d1d] text-text-inverse'
-                    : 'bg-btn-tertiary-active text-text-tertiary hover:bg-btn-tertiary-hover'
-                }`}
-              >
-                SYMM
-              </button>
-            </div>
+            <Tabs
+              options={[
+                {
+                  value: 'hyperliquid',
+                  label: 'HYPERLIQUID',
+                  backgroundColor: 'var(--bg-hl)',
+                  textColor: 'var(--text-hl)',
+                },
+                {
+                  value: 'symm',
+                  label: 'SYMM',
+                  backgroundColor: 'var(--bg-symm)',
+                  textColor: 'var(--text-symm)',
+                },
+              ]}
+              value={selectedEngine}
+              onChange={(value) => setSelectedEngine(value as EngineType)}
+            />
 
             {/* SYMM Account Selection */}
             {selectedEngine === 'symm' && (
@@ -288,7 +285,7 @@ export function WithdrawModal({ isOpen, onClose }: WithdrawModalProps) {
 
             {/* Info Message */}
             <div className="flex gap-5px p-11px rounded-lg bg-bg-raised border border-border-subtle">
-              <Info className="w-4 h-4 text-text-warning flex-shrink-0 mt-0.5" />
+              <Info className="w-4 h-4 text-text-warning shrink-0 mt-0.5" />
               <p className="text-label-sm text-text-secondary leading-relaxed">
                 {selectedEngine === 'hyperliquid' ? (
                   <>

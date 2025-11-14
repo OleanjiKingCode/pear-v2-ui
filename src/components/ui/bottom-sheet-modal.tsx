@@ -83,7 +83,11 @@ export function BottomSheetModal({
       // 1. Dragging from handle, OR
       // 2. At top of scroll and dragging down, OR
       // 3. Dragging up to expand when at half
-      if (isDragHandle || (isScrolledToTop && deltaY > 0) || (isScrolledToTop && deltaY < 0 && snapPoint === 'half')) {
+      if (
+        isDragHandle ||
+        (isScrolledToTop && deltaY > 0) ||
+        (isScrolledToTop && deltaY < 0 && snapPoint === 'half')
+      ) {
         setIsDragging(true)
       } else {
         // Reset if not valid drag
@@ -162,7 +166,7 @@ export function BottomSheetModal({
   const handleMouseDown = (e: React.MouseEvent) => {
     const target = e.target as HTMLElement
     const isDragHandle = target.closest('[data-drag-handle]')
-    
+
     if (isDragHandle) {
       e.preventDefault()
       setStartY(e.clientY)
@@ -171,20 +175,23 @@ export function BottomSheetModal({
     }
   }
 
-  const handleMouseMove = useCallback((e: MouseEvent) => {
-    if (!isDragging || !startY) return
+  const handleMouseMove = useCallback(
+    (e: MouseEvent) => {
+      if (!isDragging || !startY) return
 
-    const deltaY = e.clientY - startY
-    setCurrentY(e.clientY)
+      const deltaY = e.clientY - startY
+      setCurrentY(e.clientY)
 
-    // Allow dragging down or up to next snap point
-    if (deltaY > 0) {
-      const resistance = deltaY > 100 ? 0.5 : 1
-      setTranslateY(deltaY * resistance)
-    } else if (deltaY < 0 && snapPoint === 'half') {
-      setTranslateY(deltaY)
-    }
-  }, [isDragging, startY, snapPoint])
+      // Allow dragging down or up to next snap point
+      if (deltaY > 0) {
+        const resistance = deltaY > 100 ? 0.5 : 1
+        setTranslateY(deltaY * resistance)
+      } else if (deltaY < 0 && snapPoint === 'half') {
+        setTranslateY(deltaY)
+      }
+    },
+    [isDragging, startY, snapPoint],
+  )
 
   const handleMouseUp = useCallback(() => {
     if (!isDragging || !startY) return
@@ -253,12 +260,14 @@ export function BottomSheetModal({
       />
 
       {/* Desktop Modal (md and up) */}
-      <div className="hidden md:flex fixed inset-0 z-50 items-center justify-center pointer-events-none">
+      <div className="hidden md:flex fixed inset-0 z-50 items-center justify-center pointer-events-none px-4">
         <div
-          className="w-full bg-bg-overlay border border-border-default rounded-lg pointer-events-auto mx-13px shadow-xl"
-          style={{ 
+          className="w-full bg-bg-overlay border border-border-default rounded-2xl pointer-events-auto shadow-xl"
+          style={{
             maxWidth,
-            animation: isOpen ? 'fadeIn 0.2s ease-out' : 'fadeOut 0.2s ease-out',
+            animation: isOpen
+              ? 'fadeIn 0.2s ease-out'
+              : 'fadeOut 0.2s ease-out',
           }}
         >
           {children}
@@ -268,12 +277,12 @@ export function BottomSheetModal({
       {/* Mobile Bottom Sheet (below md) */}
       <div
         ref={sheetRef}
-        className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-bg-overlay border-t border-border-default rounded-t-2xl pointer-events-auto flex flex-col shadow-2xl"
+        className="md:hidden fixed bottom-0 left-0 right-0 w-full max-w-full z-50 bg-bg-overlay border-t border-border-default rounded-t-2xl pointer-events-auto flex flex-col shadow-2xl"
         style={{
           height: heightStyle,
           transform: snapPoint === 'closed' ? 'translateY(100%)' : undefined,
-          transition: isDragging 
-            ? 'none' 
+          transition: isDragging
+            ? 'none'
             : snapPoint === 'closed'
               ? 'transform 0.3s ease-out'
               : 'height 0.3s cubic-bezier(0.32, 0.72, 0, 1)',
@@ -288,7 +297,7 @@ export function BottomSheetModal({
         <div
           ref={dragHandleRef}
           data-drag-handle
-          className="flex justify-center items-center py-3 cursor-grab active:cursor-grabbing flex-shrink-0 touch-none"
+          className="flex justify-center items-center py-3 cursor-grab active:cursor-grabbing shrink-0 touch-none"
         >
           <div className="w-12 h-1.5 bg-border-default rounded-full opacity-60" />
         </div>
@@ -308,4 +317,3 @@ export function BottomSheetModal({
     </>
   )
 }
-
