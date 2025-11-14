@@ -143,7 +143,7 @@ export function DepositModal({ isOpen, onClose }: DepositModalProps) {
           {/* Deposit Button */}
           <Button
             onClick={handleDeposit}
-            className="w-full px-11px py-5px h-[42px] rounded-lg bg-[#6b7c3f] hover:bg-[#7a8f47] text-text-inverse text-label-md font-medium transition-colors"
+            className="w-full px-11px py-5px h-[37px] rounded-lg bg-btn-primary-active hover:bg-btn-primary-hover disabled:bg-btn-primary-disabled text-text-inverse text-label-md font-medium transition-colors"
           >
             Deposit
           </Button>
