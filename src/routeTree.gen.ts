@@ -16,6 +16,7 @@ import { Route as MarketsRouteImport } from './routes/markets'
 import { Route as EarnRouteImport } from './routes/earn'
 import { Route as AgentPearRouteImport } from './routes/agent-pear'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as VaultsVaultIdRouteImport } from './routes/vaults.$vaultId'
 
 const VaultsRoute = VaultsRouteImport.update({
   id: '/vaults',
@@ -52,6 +53,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const VaultsVaultIdRoute = VaultsVaultIdRouteImport.update({
+  id: '/$vaultId',
+  path: '/$vaultId',
+  getParentRoute: () => VaultsRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -60,7 +66,8 @@ export interface FileRoutesByFullPath {
   '/markets': typeof MarketsRoute
   '/portfolio': typeof PortfolioRoute
   '/trade': typeof TradeRoute
-  '/vaults': typeof VaultsRoute
+  '/vaults': typeof VaultsRouteWithChildren
+  '/vaults/$vaultId': typeof VaultsVaultIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -69,7 +76,8 @@ export interface FileRoutesByTo {
   '/markets': typeof MarketsRoute
   '/portfolio': typeof PortfolioRoute
   '/trade': typeof TradeRoute
-  '/vaults': typeof VaultsRoute
+  '/vaults': typeof VaultsRouteWithChildren
+  '/vaults/$vaultId': typeof VaultsVaultIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -79,7 +87,8 @@ export interface FileRoutesById {
   '/markets': typeof MarketsRoute
   '/portfolio': typeof PortfolioRoute
   '/trade': typeof TradeRoute
-  '/vaults': typeof VaultsRoute
+  '/vaults': typeof VaultsRouteWithChildren
+  '/vaults/$vaultId': typeof VaultsVaultIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -91,6 +100,7 @@ export interface FileRouteTypes {
     | '/portfolio'
     | '/trade'
     | '/vaults'
+    | '/vaults/$vaultId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -100,6 +110,7 @@ export interface FileRouteTypes {
     | '/portfolio'
     | '/trade'
     | '/vaults'
+    | '/vaults/$vaultId'
   id:
     | '__root__'
     | '/'
@@ -109,6 +120,7 @@ export interface FileRouteTypes {
     | '/portfolio'
     | '/trade'
     | '/vaults'
+    | '/vaults/$vaultId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -118,7 +130,7 @@ export interface RootRouteChildren {
   MarketsRoute: typeof MarketsRoute
   PortfolioRoute: typeof PortfolioRoute
   TradeRoute: typeof TradeRoute
-  VaultsRoute: typeof VaultsRoute
+  VaultsRoute: typeof VaultsRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -172,8 +184,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/vaults/$vaultId': {
+      id: '/vaults/$vaultId'
+      path: '/$vaultId'
+      fullPath: '/vaults/$vaultId'
+      preLoaderRoute: typeof VaultsVaultIdRouteImport
+      parentRoute: typeof VaultsRoute
+    }
   }
 }
+
+interface VaultsRouteChildren {
+  VaultsVaultIdRoute: typeof VaultsVaultIdRoute
+}
+
+const VaultsRouteChildren: VaultsRouteChildren = {
+  VaultsVaultIdRoute: VaultsVaultIdRoute,
+}
+
+const VaultsRouteWithChildren =
+  VaultsRoute._addFileChildren(VaultsRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
@@ -182,7 +212,7 @@ const rootRouteChildren: RootRouteChildren = {
   MarketsRoute: MarketsRoute,
   PortfolioRoute: PortfolioRoute,
   TradeRoute: TradeRoute,
-  VaultsRoute: VaultsRoute,
+  VaultsRoute: VaultsRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

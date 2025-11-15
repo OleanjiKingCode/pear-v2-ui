@@ -67,17 +67,18 @@ export function LayoutFooter() {
             uPNL:
           </span>
           <span
-            className="font-mono font-semibold"
+            className="font-mono font-semibold text-body-xs"
             style={{ color: getUpnlColor() }}
           >
             {upnl}
           </span>
         </div>
+
         <div className="flex items-center gap-3px ">
           <span className="text-text-secondary underline text-body-xs decoration-dotted">
             Avl margin:
           </span>
-          <span className="font-mono font-semibold text-text-primary">
+          <span className="font-mono font-semibold text-text-primary text-body-xs">
             {avlMargin}
           </span>
         </div>

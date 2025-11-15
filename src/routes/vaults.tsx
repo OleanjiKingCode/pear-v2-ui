@@ -1,5 +1,10 @@
 import { useState } from 'react'
-import { createFileRoute } from '@tanstack/react-router'
+import {
+  createFileRoute,
+  useNavigate,
+  Outlet,
+  useMatches,
+} from '@tanstack/react-router'
 import { X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
@@ -182,6 +187,8 @@ const mockVaults = [
 ]
 
 function VaultsPage() {
+  const navigate = useNavigate()
+  const matches = useMatches()
   const [activeTab, setActiveTab] = useState<'all' | 'invested'>('all')
   const [searchQuery, setSearchQuery] = useState('')
   const [isInvestmentsDrawerOpen, setIsInvestmentsDrawerOpen] = useState(false)
@@ -199,6 +206,16 @@ function VaultsPage() {
     }
     return true
   })
+
+  // Check if we're on a child route (vault detail page)
+  const isChildRoute = matches.some(
+    (match) => match.routeId === '/vaults/$vaultId',
+  )
+
+  // If on child route, just render the outlet
+  if (isChildRoute) {
+    return <Outlet />
+  }
 
   return (
     <div className="relative">
@@ -385,6 +402,12 @@ function VaultsPage() {
                       {filteredVaults.map((vault) => (
                         <tr
                           key={vault.id}
+                          onClick={() =>
+                            navigate({
+                              to: '/vaults/$vaultId',
+                              params: { vaultId: vault.id.toString() },
+                            })
+                          }
                           className="hover:opacity-80 transition-opacity cursor-pointer bg-bg-raised"
                         >
                           <td className="p-5px h-12 rounded-l-lg pl-5px">
@@ -474,6 +497,12 @@ function VaultsPage() {
                         return (
                           <tr
                             key={vault.id}
+                            onClick={() =>
+                              navigate({
+                                to: '/vaults/$vaultId',
+                                params: { vaultId: vault.id.toString() },
+                              })
+                            }
                             className="hover:opacity-80 transition-opacity cursor-pointer bg-bg-raised"
                           >
                             <td className="p-5px h-12 rounded-l-lg pl-5px">
@@ -545,6 +574,12 @@ function VaultsPage() {
                   return (
                     <div
                       key={vault.id}
+                      onClick={() =>
+                        navigate({
+                          to: '/vaults/$vaultId',
+                          params: { vaultId: vault.id.toString() },
+                        })
+                      }
                       className="bg-bg-raised rounded-lg p-10px hover:opacity-80 transition-opacity cursor-pointer"
                     >
                       <div className="flex items-center justify-between mb-7px">
