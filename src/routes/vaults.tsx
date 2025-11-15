@@ -4,19 +4,83 @@ import { X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import { CornersOut, SearchIcon } from '@/components/ui/svgIcons'
+import { CreateVaultModal } from '@/components/modals/CreateVaultModal'
+import { InvestmentsModal } from '@/components/modals/InvestmentsModal'
 
 // Mock transaction data for investments
 const mockTransactions = [
-  { type: 'Deposit', amount: '$78,730.23', vault: 'Huf Vault' },
-  { type: 'Withdraw', amount: '$78,730.23', vault: 'Agent Pear' },
-  { type: 'Withdraw', amount: '$78,730.23', vault: 'Hufs bet wa...' },
-  { type: 'Deposit', amount: '$78,730.23', vault: 'Ytsejam' },
-  { type: 'Deposit', amount: '$78,730.23', vault: 'Ytsejam' },
-  { type: 'Withdraw', amount: '$78,730.23', vault: 'Agent Pear' },
-  { type: 'Deposit', amount: '$78,730.23', vault: 'Ytsejam' },
-  { type: 'Deposit', amount: '$78,730.23', vault: 'Ytsejam' },
-  { type: 'Deposit', amount: '$78,730.23', vault: 'Ytsejam' },
-  { type: 'Deposit', amount: '$78,730.23', vault: 'Ytsejam' },
+  {
+    date: '02-03-2025',
+    type: 'Withdraw',
+    amount: '$78,730.23',
+    vault: 'Agent Pear - Senior',
+  },
+  {
+    date: '02-03-2025',
+    type: 'Withdraw',
+    amount: '$78,730.23',
+    vault: 'Agent Pear - Senior',
+  },
+  {
+    date: '02-03-2025',
+    type: 'Deposit',
+    amount: '$78,730.23',
+    vault: 'Huf Vault',
+  },
+  {
+    date: '02-03-2025',
+    type: 'Deposit',
+    amount: '$78,730.23',
+    vault: 'Huf Vault',
+  },
+  {
+    date: '02-03-2025',
+    type: 'Withdraw',
+    amount: '$78,730.23',
+    vault: 'Agent Pear - Junior',
+  },
+  {
+    date: '02-03-2025',
+    type: 'Withdraw',
+    amount: '$78,730.23',
+    vault: 'Agent Pear - Junior',
+  },
+  {
+    date: '02-03-2025',
+    type: 'Withdraw',
+    amount: '$78,730.23',
+    vault: 'Hufs right',
+  },
+  {
+    date: '02-03-2025',
+    type: 'Withdraw',
+    amount: '$78,730.23',
+    vault: 'Hufs right',
+  },
+  {
+    date: '02-03-2025',
+    type: 'Deposit',
+    amount: '$78,730.23',
+    vault: 'Ytsejam',
+  },
+  {
+    date: '02-03-2025',
+    type: 'Deposit',
+    amount: '$78,730.23',
+    vault: 'Ytsejam',
+  },
+  {
+    date: '02-03-2025',
+    type: 'Deposit',
+    amount: '$78,730.23',
+    vault: 'Ytsejam',
+  },
+  {
+    date: '02-03-2025',
+    type: 'Deposit',
+    amount: '$78,730.23',
+    vault: 'Ytsejam',
+  },
 ]
 
 // Mock invested vaults (vaults where user has investments)
@@ -121,6 +185,8 @@ function VaultsPage() {
   const [activeTab, setActiveTab] = useState<'all' | 'invested'>('all')
   const [searchQuery, setSearchQuery] = useState('')
   const [isInvestmentsDrawerOpen, setIsInvestmentsDrawerOpen] = useState(false)
+  const [isInvestmentsModalOpen, setIsInvestmentsModalOpen] = useState(false)
+  const [isCreateVaultModalOpen, setIsCreateVaultModalOpen] = useState(false)
 
   // Mock wallet connection state - set to true to show transactions
   const isWalletConnected = true
@@ -162,7 +228,7 @@ function VaultsPage() {
               Vaults
             </h1>
             <button
-              onClick={() => setIsInvestmentsDrawerOpen(true)}
+              onClick={() => setIsInvestmentsModalOpen(true)}
               className="lg:hidden bg-brand-secondary hover:bg-btn-secondary-hover disabled:bg-btn-secondary-disabled text-brand-primary rounded-lg text-label-sm px-11px py-5px font-medium transition-colors"
             >
               My Investments
@@ -191,7 +257,10 @@ function VaultsPage() {
             </div>
 
             <div className="flex flex-col gap-7px items-end justify-between lg:justify-end">
-              <Button className="w-full lg:w-fit bg-brand-primary hover:bg-btn-primary-hover disabled:bg-btn-primary-disabled rounded-lg text-label-sm px-11px py-5px text-text-inverse font-medium flex-1 lg:flex-none transition-colors">
+              <Button
+                onClick={() => setIsCreateVaultModalOpen(true)}
+                className="w-full lg:w-fit bg-brand-primary hover:bg-btn-primary-hover disabled:bg-btn-primary-disabled rounded-lg text-label-sm px-11px py-5px text-text-inverse font-medium flex-1 lg:flex-none transition-colors"
+              >
                 Create Vault
               </Button>
 
@@ -229,7 +298,7 @@ function VaultsPage() {
                 <button
                   onClick={() => setActiveTab('all')}
                   className={cn(
-                    'text-label-sm w-full lg:w-fit font-medium transition-all relative px-0 py-7px',
+                    'text-label-sm w-full lg:w-fit cursor-pointer  font-medium transition-all relative px-0 py-7px',
                     activeTab === 'all'
                       ? 'text-text-primary'
                       : 'text-text-disabled',
@@ -243,7 +312,7 @@ function VaultsPage() {
                 <button
                   onClick={() => setActiveTab('invested')}
                   className={cn(
-                    'text-label-sm  w-full lg:w-fit font-medium transition-all relative px-0 py-7px',
+                    'text-label-sm  w-full lg:w-fit cursor-pointer font-medium transition-all relative px-0 py-7px',
                     activeTab === 'invested'
                       ? 'text-text-primary'
                       : 'text-text-disabled',
@@ -639,7 +708,10 @@ function VaultsPage() {
                 My Investments
               </h2>
 
-              <button className="p-3px w-6 h-6 flex items-center justify-center bg-brand-secondary hover:bg-btn-secondary-hover disabled:bg-btn-secondary-disabled rounded-lg transition-colors">
+              <button
+                onClick={() => setIsInvestmentsModalOpen(true)}
+                className="p-3px w-6 h-6 flex items-center justify-center bg-brand-secondary hover:bg-btn-secondary-hover disabled:bg-btn-secondary-disabled rounded-lg transition-colors"
+              >
                 <CornersOut isConnected={isWalletConnected} />
               </button>
             </div>
@@ -699,13 +771,9 @@ function VaultsPage() {
                           {tx.amount}
                         </div>
                         <div
-                          className={
-                            tx.vault === 'Agent Pear'
-                              ? 'text-text-primary'
-                              : 'text-text-primary'
-                          }
+                          className="text-text-primary truncate"
                           style={
-                            tx.vault === 'Agent Pear'
+                            tx.vault.includes('Agent Pear')
                               ? {
                                   background:
                                     'linear-gradient(90deg, #a2db5c 0%, #29f8ff 100%)',
@@ -716,13 +784,18 @@ function VaultsPage() {
                               : undefined
                           }
                         >
-                          {tx.vault}
+                          {tx.vault.includes('Agent Pear')
+                            ? 'Agent Pear'
+                            : tx.vault}
                         </div>
                       </div>
                     ))}
                   </div>
 
-                  <button className="w-full text-left text-label-sm text-brand-primary hover:opacity-80 transition-opacity">
+                  <button
+                    onClick={() => setIsInvestmentsModalOpen(true)}
+                    className="w-full text-left text-label-sm text-brand-primary hover:opacity-80 transition-opacity"
+                  >
                     <span>See All</span>
                   </button>
                 </div>
@@ -835,13 +908,9 @@ function VaultsPage() {
                               {tx.amount}
                             </div>
                             <div
-                              className={
-                                tx.vault === 'Agent Pear'
-                                  ? 'text-text-primary'
-                                  : 'text-text-primary'
-                              }
+                              className="text-text-primary truncate"
                               style={
-                                tx.vault === 'Agent Pear'
+                                tx.vault.includes('Agent Pear')
                                   ? {
                                       background:
                                         'linear-gradient(90deg, #a2db5c 0%, #29f8ff 100%)',
@@ -852,14 +921,22 @@ function VaultsPage() {
                                   : undefined
                               }
                             >
-                              {tx.vault}
+                              {tx.vault.includes('Agent Pear')
+                                ? 'Agent Pear'
+                                : tx.vault}
                             </div>
                           </div>
                         ))}
                       </div>
 
                       {/* See All Link */}
-                      <button className="w-full pt-7px text-label-sm text-brand-primary hover:opacity-80 transition-opacity">
+                      <button
+                        onClick={() => {
+                          setIsInvestmentsDrawerOpen(false)
+                          setIsInvestmentsModalOpen(true)
+                        }}
+                        className="w-full pt-7px text-label-sm text-brand-primary hover:opacity-80 transition-opacity"
+                      >
                         See All
                       </button>
                     </>
@@ -874,6 +951,18 @@ function VaultsPage() {
           </div>
         </>
       )}
+
+      {/* Create Vault Modal */}
+      <CreateVaultModal
+        isOpen={isCreateVaultModalOpen}
+        onClose={() => setIsCreateVaultModalOpen(false)}
+      />
+
+      {/* My Investments Modal */}
+      <InvestmentsModal
+        isOpen={isInvestmentsModalOpen}
+        onClose={() => setIsInvestmentsModalOpen(false)}
+      />
     </div>
   )
 }

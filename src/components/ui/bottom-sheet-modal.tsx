@@ -30,6 +30,7 @@ export function BottomSheetModal({
       setTranslateY(0)
       document.body.style.overflow = 'hidden'
     } else {
+      setSnapPoint('closed')
       document.body.style.overflow = ''
     }
 
@@ -262,7 +263,7 @@ export function BottomSheetModal({
       {/* Desktop Modal (md and up) */}
       <div className="hidden md:flex fixed inset-0 z-50 items-center justify-center pointer-events-none px-4">
         <div
-          className="w-full bg-bg-overlay border border-border-default rounded-2xl pointer-events-auto shadow-xl"
+          className="w-full bg-bg-overlay border border-border-default rounded-2xl pointer-events-auto shadow-xl overflow-hidden"
           style={{
             maxWidth,
             animation: isOpen
