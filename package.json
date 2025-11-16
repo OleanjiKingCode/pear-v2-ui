@@ -9,7 +9,6 @@
     "lint": "eslint",
     "format": "prettier",
     "check": "prettier --write . && eslint --fix",
-    "start": "node --import ./.output/server/instrument.server.mjs .output/server/index.mjs",
     "generate-tokens": "tsx scripts/generate-tokens.ts"
   },
   "dependencies": {
