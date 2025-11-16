@@ -11,6 +11,3 @@ count.txt
 .output
 .vinxi
 todos.json
-
-# Auto-generated design tokens
-src/styles.generated.css
