@@ -1,10 +1,16 @@
 import { useState } from 'react'
 import { createFileRoute, Link } from '@tanstack/react-router'
-import { ChevronLeft, Copy } from 'lucide-react'
+import { ChevronLeft, Copy, ChevronDown } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover'
 import { cn } from '@/lib/utils'
 import { DepositModal } from '@/components/modals/DepositModal'
 import { WithdrawModal } from '@/components/modals/WithdrawModal'
+import { ShareIcon } from '@/components/ui/svgIcons'
 
 export const Route = createFileRoute('/vaults/$vaultId')({
   component: VaultDetailPage,
@@ -100,19 +106,29 @@ const mockPositions = [
 
 // Mock chart data
 const mockChartData = [
-  { time: '12 TUE', value: 30000 },
-  { time: '12 TUE', value: 40000 },
-  { time: '12 TUE', value: 35000 },
-  { time: '12 TUE', value: 50000 },
-  { time: '12 TUE', value: 45000 },
-  { time: '12 TUE', value: 35000 },
-  { time: '12 TUE', value: 40000 },
-  { time: '12 TUE', value: 30000 },
-  { time: '12 TUE', value: 35000 },
-  { time: '12 TUE', value: 45000 },
-  { time: '12 TUE', value: 50000 },
-  { time: '12 TUE', value: 55000 },
-  { time: '12 TUE', value: 60000 },
+  { date: '2024-10-01', value: 30000 },
+  { date: '2024-10-03', value: 40000 },
+  { date: '2024-10-05', value: 35000 },
+  { date: '2024-10-07', value: 50000 },
+  { date: '2024-10-09', value: 45000 },
+  { date: '2024-10-11', value: 35000 },
+  { date: '2024-10-13', value: 40000 },
+  { date: '2024-10-15', value: 30000 },
+  { date: '2024-10-17', value: 35000 },
+  { date: '2024-10-19', value: 45000 },
+  { date: '2024-10-21', value: 50000 },
+  { date: '2024-10-23', value: 55000 },
+  { date: '2024-10-25', value: 60000 },
+  { date: '2024-10-27', value: 58000 },
+  { date: '2024-10-29', value: 62000 },
+  { date: '2024-10-31', value: 65000 },
+  { date: '2024-11-02', value: 63000 },
+  { date: '2024-11-04', value: 68000 },
+  { date: '2024-11-06', value: 70000 },
+  { date: '2024-11-08', value: 67000 },
+  { date: '2024-11-10', value: 72000 },
+  { date: '2024-11-12', value: 75000 },
+  { date: '2024-11-14', value: 78000 },
 ]
 
 // Mock allocation data
@@ -130,6 +146,25 @@ const strategyBreakdown = [
   { label: 'Stable', percentage: 10, value: '$239,000,090', color: '#22D3EE' },
 ]
 
+// Mock performance metrics
+const mockPerformanceMetrics = {
+  leaderInvestment: '$230,000.36',
+  leaderInvestmentPercent: '23%',
+  maxDrawdown: '6.2%',
+  profitFactor: '6.2%',
+  totalPnl: '$56,012.87',
+  tradedVolume: '$670,000.36',
+  profitShare: '10%',
+  apr: '10.98%',
+  winRate: '62.87%',
+}
+
+// Mock portfolio data
+const mockPortfolio = [
+  { symbol: 'USDC', amount: '$900,487.90', icon: '/tokens/usdc.svg' },
+  { symbol: 'USDHL', amount: '$900,487.90', icon: '/tokens/usdc.svg' },
+]
+
 function VaultDetailPage() {
   const { vaultId } = Route.useParams()
   const vault = mockVaultData[vaultId] || mockVaultData['3']
@@ -138,6 +173,7 @@ function VaultDetailPage() {
     'about' | 'performance' | 'portfolio'
   >('about')
   const [timeRange, setTimeRange] = useState<string>('all')
+  const [isTimeRangeOpen, setIsTimeRangeOpen] = useState(false)
   const [isDepositModalOpen, setIsDepositModalOpen] = useState(false)
   const [isWithdrawModalOpen, setIsWithdrawModalOpen] = useState(false)
   const [activePositionTab, setActivePositionTab] = useState<
@@ -147,6 +183,42 @@ function VaultDetailPage() {
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text)
   }
+
+  const getTimeRangeLabel = (value: string) => {
+    switch (value) {
+      case 'all':
+        return 'All Time'
+      case '30d':
+        return '30 Days'
+      case '7d':
+        return '7 Days'
+      case '24h':
+        return '24 Hours'
+      default:
+        return 'All Time'
+    }
+  }
+
+  // Filter chart data based on time range
+  const filteredChartData = mockChartData.filter((item) => {
+    if (timeRange === 'all') return true
+
+    const date = new Date(item.date)
+    const referenceDate = new Date('2024-11-14')
+    let daysToSubtract = 0
+
+    if (timeRange === '30d') {
+      daysToSubtract = 30
+    } else if (timeRange === '7d') {
+      daysToSubtract = 7
+    } else if (timeRange === '24h') {
+      daysToSubtract = 1
+    }
+
+    const startDate = new Date(referenceDate)
+    startDate.setDate(startDate.getDate() - daysToSubtract)
+    return date >= startDate
+  })
 
   return (
     <div className="relative min-h-screen">
@@ -161,7 +233,7 @@ function VaultDetailPage() {
       />
 
       <div
-        className="flex flex-col px-4 pt-13px gap-12px"
+        className="flex flex-col px-9px lg:px-9px pt-10 gap-12px"
         style={{
           maxWidth: '1232px',
           margin: '0 auto',
@@ -169,20 +241,24 @@ function VaultDetailPage() {
       >
         {/* Header */}
         <div className="flex flex-col gap-12px">
-          <div className="flex items-center gap-9px">
+          <div className="flex items-center gap-5px">
             <Link to="/vaults">
-              <button className="p-5px w-8 h-8 flex items-center justify-center bg-btn-secondary-active hover:bg-btn-secondary-hover rounded-lg transition-colors">
-                <ChevronLeft className="w-5 h-5 text-brand-primary" />
+              <button className="p-5px w-8 h-8 flex items-center justify-center bg-transparent transition-colors">
+                <ChevronLeft className="w-4 h-4 text-text-primary" />
               </button>
             </Link>
             <div className="flex items-center gap-5px">
               <img
-                src="/agentPearWithBg.svg"
+                src={
+                  vault.name.toLowerCase().includes('agent')
+                    ? '/agentPearWithBg.svg'
+                    : '/agents/huf.png'
+                }
                 alt="Vault Logo"
-                className="w-8 h-8"
+                className="w-8 h-8 rounded-xl"
               />
               <h1
-                className="text-heading-h4 font-medium"
+                className="text-heading-h4 lg:text-heading-h3 font-medium"
                 style={
                   vault.name === 'Agent Pear'
                     ? {
@@ -192,13 +268,13 @@ function VaultDetailPage() {
                         WebkitTextFillColor: 'transparent',
                         backgroundClip: 'text',
                       }
-                    : { color: 'var(--text-primary)' }
+                    : { color: '#fff' }
                 }
               >
                 {vault.name} {vault.variant ? `Vault` : ''}
               </h1>
               {vault.variant && (
-                <span className="text-heading-h4 font-medium text-text-primary">
+                <span className="text-heading-h4 lg:text-heading-h3 font-medium text-text-primary">
                   {vault.variant}
                 </span>
               )}
@@ -206,65 +282,68 @@ function VaultDetailPage() {
           </div>
 
           {/* Stats Row */}
-          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-9px">
-            <div className="flex flex-col lg:flex-row lg:items-center gap-9px lg:gap-12px flex-wrap">
-              <div className="space-y-4px">
-                <div className="text-label-sm text-text-tertiary">
+          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-9px lg:gap-7px">
+            <div className="grid grid-cols-2 lg:flex lg:flex-row lg:items-center gap-9px lg:gap-12px lg:flex-wrap">
+              <div className="space-y-3px lg:space-y-5px">
+                <div className="text-label-xs lg:text-label-sm text-text-tertiary">
                   Total Value Locked
                 </div>
-                <div className="text-heading-h6 font-medium text-text-secondary">
+                <div className="text-heading-h6 lg:text-heading-h5 font-medium text-text-primary">
                   {vault.tvl}
                 </div>
               </div>
-              <div className="space-y-4px">
-                <div className="text-label-sm text-text-tertiary">
+              <div className="space-y-3px lg:space-y-5px">
+                <div className="text-label-xs lg:text-label-sm text-text-tertiary">
                   Total PnL
                 </div>
-                <div className="text-heading-h6 font-medium text-text-secondary">
+                <div className="text-heading-h6 lg:text-heading-h5 font-medium text-text-primary">
                   {vault.totalPnl}
                 </div>
               </div>
-              <div className="space-y-4px">
-                <div className="text-label-sm text-text-tertiary">
+              <div className="space-y-3px lg:space-y-5px">
+                <div className="text-label-xs lg:text-label-sm text-text-tertiary">
                   30 Days Return
                 </div>
                 <div
                   className={cn(
-                    'text-heading-h6 font-medium',
+                    'text-heading-h6 lg:text-heading-h5 font-medium',
                     vault.pnlPositive ? 'text-text-profit' : 'text-text-loss',
                   )}
                 >
-                  {vault.return30d} <span className="text-label-sm">APR</span>
+                  {vault.return30d}{' '}
+                  <span className="text-label-xs lg:text-label-sm text-text-tertiary">
+                    APR
+                  </span>
                 </div>
               </div>
-              <div className="space-y-4px">
-                <div className="text-label-sm text-text-tertiary">
+              <div className="space-y-3px lg:space-y-5px">
+                <div className="text-label-xs lg:text-label-sm text-text-tertiary">
                   Vault Age
                 </div>
-                <div className="text-heading-h6 font-medium text-text-secondary">
+                <div className="text-heading-h6 lg:text-heading-h5 font-medium text-text-primary">
                   {vault.vaultAge}
                 </div>
               </div>
-              <div className="space-y-4px">
-                <div className="text-label-sm text-text-tertiary">
+              <div className="space-y-3px lg:space-y-5px col-span-2 lg:col-span-1">
+                <div className="text-label-xs lg:text-label-sm text-text-tertiary">
                   My Investment
                 </div>
-                <div className="text-heading-h6 font-medium text-text-secondary">
+                <div className="text-heading-h6 lg:text-heading-h5 font-medium text-text-primary">
                   {vault.myInvestment}
                 </div>
               </div>
             </div>
 
-            <div className="flex items-center gap-7px">
+            <div className="flex flex-col lg:flex-row items-stretch lg:items-center gap-5px">
               <Button
                 onClick={() => setIsDepositModalOpen(true)}
-                className="bg-brand-primary hover:bg-btn-primary-hover disabled:bg-btn-primary-disabled rounded-lg text-label-sm px-11px py-5px text-text-inverse font-medium transition-colors"
+                className="bg-brand-primary hover:bg-btn-primary-hover disabled:bg-btn-primary-disabled rounded-lg text-label-sm px-9px py-9px lg:px-7px lg:py-5px text-text-inverse font-medium transition-colors w-full lg:w-auto"
               >
                 Deposit
               </Button>
               <Button
                 onClick={() => setIsWithdrawModalOpen(true)}
-                className="bg-btn-secondary-active hover:bg-btn-secondary-hover disabled:bg-btn-secondary-disabled rounded-lg text-label-sm px-11px py-5px text-brand-primary font-medium transition-colors"
+                className="bg-btn-secondary-active hover:bg-btn-secondary-hover disabled:bg-btn-secondary-disabled rounded-lg text-label-sm px-9px py-9px lg:px-7px lg:py-5px text-brand-primary font-medium transition-colors w-full lg:w-auto"
               >
                 Withdraw
               </Button>
@@ -273,129 +352,182 @@ function VaultDetailPage() {
         </div>
 
         {/* Main Content Grid */}
-        <div className="flex flex-col lg:flex-row gap-10px">
+        <div className="flex flex-col lg:flex-row gap-9px w-full">
           {/* Left Column - Chart and Info */}
-          <div className="flex-1 space-y-10px">
+          <div className="flex-1 space-y-9px w-full lg:max-w-[830px]">
             {/* Chart Section */}
-            <div className="bg-bg-raised rounded-lg p-13px">
-              <div className="flex items-center justify-between mb-13px">
-                <div className="text-label-sm text-text-tertiary">
-                  Performance Chart
-                </div>
-                <select
-                  value={timeRange}
-                  onChange={(e) => setTimeRange(e.target.value)}
-                  className="bg-input-base border border-border-default rounded-lg text-label-sm text-text-primary px-7px py-5px outline-none focus:border-border-high transition-colors"
+            <div className="rounded-lg space-y-5px">
+              <Popover open={isTimeRangeOpen} onOpenChange={setIsTimeRangeOpen}>
+                <PopoverTrigger asChild>
+                  <button className="w-[106px] h-[33px] bg-input-base border border-transparent rounded-lg text-label-sm text-text-primary font-medium flex items-center justify-between px-7px hover:bg-btn-secondary-hover transition-colors">
+                    <span>{getTimeRangeLabel(timeRange)}</span>
+                    <ChevronDown className="w-4 h-4 text-text-tertiary" />
+                  </button>
+                </PopoverTrigger>
+                <PopoverContent
+                  className="p-3px! border border-border-default bg-bg-subtle rounded-lg overflow-hidden w-[120px] mt-1"
+                  align="start"
                 >
-                  <option value="all">All Time</option>
-                  <option value="30d">30 Days</option>
-                  <option value="7d">7 Days</option>
-                  <option value="24h">24 Hours</option>
-                </select>
-              </div>
+                  <div className="flex flex-col gap-3px w-full p-0">
+                    <button
+                      onClick={() => {
+                        setTimeRange('all')
+                        setIsTimeRangeOpen(false)
+                      }}
+                      className={cn(
+                        'text-label-sm! text-left px-7px py-5px rounded transition-colors w-full',
+                        timeRange === 'all'
+                          ? 'bg-bg-overlay text-text-primary'
+                          : 'text-text-tertiary hover:bg-bg-overlay hover:text-text-primary',
+                      )}
+                    >
+                      All Time
+                    </button>
+                    <button
+                      onClick={() => {
+                        setTimeRange('30d')
+                        setIsTimeRangeOpen(false)
+                      }}
+                      className={cn(
+                        'text-label-sm! text-left px-7px py-5px rounded transition-colors',
+                        timeRange === '30d'
+                          ? 'bg-bg-overlay text-text-primary'
+                          : 'text-text-tertiary hover:bg-bg-overlay hover:text-text-primary',
+                      )}
+                    >
+                      30 Days
+                    </button>
+                    <button
+                      onClick={() => {
+                        setTimeRange('7d')
+                        setIsTimeRangeOpen(false)
+                      }}
+                      className={cn(
+                        'text-label-sm! text-left px-7px py-5px rounded transition-colors',
+                        timeRange === '7d'
+                          ? 'bg-bg-overlay text-text-primary'
+                          : 'text-text-tertiary hover:bg-bg-overlay hover:text-text-primary',
+                      )}
+                    >
+                      7 Days
+                    </button>
+                    <button
+                      onClick={() => {
+                        setTimeRange('24h')
+                        setIsTimeRangeOpen(false)
+                      }}
+                      className={cn(
+                        'text-label-sm! text-left px-7px py-5px rounded transition-colors',
+                        timeRange === '24h'
+                          ? 'bg-bg-overlay text-text-primary'
+                          : 'text-text-tertiary hover:bg-bg-overlay hover:text-text-primary',
+                      )}
+                    >
+                      24 Hours
+                    </button>
+                  </div>
+                </PopoverContent>
+              </Popover>
 
               {/* Chart */}
-              <div className="h-[300px] flex items-end justify-between gap-2">
-                <PerformanceChart data={mockChartData} />
-              </div>
-
-              {/* Chart X-axis labels */}
-              <div className="flex items-center justify-between mt-5px text-label-xs text-text-disabled">
-                {mockChartData.map((point, index) => {
-                  if (index % 2 === 0) {
-                    return <span key={index}>{point.time}</span>
-                  }
-                  return null
-                })}
+              <div className="h-[342px] w-full">
+                <PerformanceChart data={filteredChartData} />
               </div>
             </div>
 
             {/* Tabs Section */}
-            <div className="bg-bg-raised rounded-lg p-13px">
-              <div className="flex items-center gap-9px border-b border-border-default mb-13px">
+            <div className="space-y-9px">
+              <div className="flex items-center gap-9px lg:gap-12px border-b border-border-default overflow-x-auto scrollbar-hide">
                 <button
                   onClick={() => setActiveTab('about')}
                   className={cn(
-                    'text-label-sm font-medium transition-all relative px-0 py-7px',
+                    'text-label-sm! font-medium transition-all relative px-5px pb-7px whitespace-nowrap',
                     activeTab === 'about'
                       ? 'text-text-primary'
-                      : 'text-text-disabled',
+                      : 'text-text-tertiary',
                   )}
                 >
                   About Vault
                   {activeTab === 'about' && (
-                    <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-white" />
+                    <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-text-primary" />
                   )}
                 </button>
                 <button
                   onClick={() => setActiveTab('performance')}
                   className={cn(
-                    'text-label-sm font-medium transition-all relative px-0 py-7px',
+                    'text-label-sm! font-medium transition-all relative px-5px pb-7px whitespace-nowrap',
                     activeTab === 'performance'
                       ? 'text-text-primary'
-                      : 'text-text-disabled',
+                      : 'text-text-tertiary',
                   )}
                 >
                   Vault Performance
                   {activeTab === 'performance' && (
-                    <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-white" />
+                    <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-text-primary" />
                   )}
                 </button>
                 <button
                   onClick={() => setActiveTab('portfolio')}
                   className={cn(
-                    'text-label-sm font-medium transition-all relative px-0 py-7px',
+                    'text-label-sm! font-medium transition-all relative px-5px pb-7px whitespace-nowrap',
                     activeTab === 'portfolio'
                       ? 'text-text-primary'
-                      : 'text-text-disabled',
+                      : 'text-text-tertiary',
                   )}
                 >
                   Total Portfolio
                   {activeTab === 'portfolio' && (
-                    <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-white" />
+                    <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-text-primary" />
                   )}
                 </button>
+
+                {activeTab === 'performance' && (
+                  <div className="cursor-pointer ml-auto flex items-center gap-3px text-label-sm text-brand-primary px-3px py-2px">
+                    <span>Share</span>
+                    {ShareIcon}
+                  </div>
+                )}
               </div>
 
               {/* Tab Content */}
-              <div className="space-y-13px">
+              <div className="space-y-7px">
                 {activeTab === 'about' && (
-                  <div className="space-y-13px">
-                    <p className="text-label-sm text-text-tertiary leading-relaxed">
+                  <div className="space-y-7px">
+                    <p className="text-label-sm text-text-secondary">
                       {vault.description}
                     </p>
 
                     <div className="space-y-7px">
-                      <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-[5px]">
                         <span className="text-label-sm text-text-tertiary">
                           Vault Address:
                         </span>
-                        <div className="flex items-center gap-5px">
-                          <span className="text-label-sm text-text-primary font-mono">
+                        <div className="flex items-center gap-3px">
+                          <span className="text-label-sm text-text-secondary font-mono">
                             {vault.vaultAddress}
                           </span>
                           <button
                             onClick={() => copyToClipboard(vault.vaultAddress)}
                             className="p-3px hover:opacity-70 transition-opacity"
                           >
-                            <Copy className="w-3 h-3 text-icon-subtle" />
+                            <Copy className="w-3 h-3 text-brand-primary" />
                           </button>
                         </div>
                       </div>
 
-                      <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-[5px]">
                         <span className="text-label-sm text-text-tertiary">
                           Leader Address:
                         </span>
-                        <div className="flex items-center gap-5px">
-                          <span className="text-label-sm text-text-primary font-mono">
+                        <div className="flex items-center gap-3px">
+                          <span className="text-label-sm text-text-secondary font-mono">
                             {vault.leaderAddress}
                           </span>
                           <button
                             onClick={() => copyToClipboard(vault.leaderAddress)}
                             className="p-3px hover:opacity-70 transition-opacity"
                           >
-                            <Copy className="w-3 h-3 text-icon-subtle" />
+                            <Copy className="w-3 h-3 text-brand-primary" />
                           </button>
                         </div>
                       </div>
@@ -404,231 +536,130 @@ function VaultDetailPage() {
                 )}
 
                 {activeTab === 'performance' && (
-                  <div className="text-label-sm text-text-tertiary">
-                    Performance metrics coming soon...
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-x-16 gap-y-7px">
+                    {/* Column 1 */}
+                    <div className="space-y-7px">
+                      <div className="flex items-center gap-[5px]">
+                        <div className="text-label-sm text-text-tertiary">
+                          Leader Investment:
+                        </div>
+                        <div className="text-label-sm text-text-primary">
+                          {mockPerformanceMetrics.leaderInvestment}{' '}
+                          <span className="text-text-tertiary">
+                            ({mockPerformanceMetrics.leaderInvestmentPercent})
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center gap-[5px]">
+                        <div className="text-label-sm text-text-tertiary">
+                          Total PnL:
+                        </div>
+                        <div className="text-label-sm text-text-profit">
+                          {mockPerformanceMetrics.totalPnl}
+                        </div>
+                      </div>
+
+                      <div className="flex items-center gap-[5px]">
+                        <div className="text-label-sm text-text-tertiary">
+                          APR:
+                        </div>
+                        <div className="text-label-sm text-text-profit">
+                          {mockPerformanceMetrics.apr}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Column 2 */}
+                    <div className="space-y-9px">
+                      <div className="flex items-center gap-[5px]">
+                        <div className="text-label-sm text-text-tertiary">
+                          Max Drawdown:
+                        </div>
+                        <div className="text-label-sm text-text-primary">
+                          {mockPerformanceMetrics.maxDrawdown}
+                        </div>
+                      </div>
+
+                      <div className="flex items-center gap-[5px]">
+                        <div className="text-label-sm text-text-tertiary">
+                          Traded Volume:
+                        </div>
+                        <div className="text-label-sm text-text-primary">
+                          {mockPerformanceMetrics.tradedVolume}
+                        </div>
+                      </div>
+
+                      <div className="flex items-center gap-[5px]">
+                        <div className="text-label-sm text-text-tertiary">
+                          Win Rate:
+                        </div>
+                        <div className="text-label-sm text-text-primary">
+                          {mockPerformanceMetrics.winRate}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Column 3 */}
+                    <div className="space-y-9px">
+                      <div className="flex items-center gap-[5px]">
+                        <div className="text-label-sm text-text-tertiary">
+                          Profit Factor:
+                        </div>
+                        <div className="text-label-sm text-text-primary">
+                          {mockPerformanceMetrics.profitFactor}
+                        </div>
+                      </div>
+
+                      <div className="flex items-center gap-[5px]">
+                        <div className="text-label-sm text-text-tertiary">
+                          Profit Share:
+                        </div>
+                        <div className="text-label-sm text-text-primary">
+                          {mockPerformanceMetrics.profitShare}
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 )}
 
                 {activeTab === 'portfolio' && (
-                  <div className="text-label-sm text-text-tertiary">
-                    Portfolio details coming soon...
+                  <div className="space-y-5px">
+                    {mockPortfolio.map((item, index) => (
+                      <div
+                        key={index}
+                        className="flex items-center justify-between"
+                      >
+                        <div className="flex items-center gap-3px">
+                          <img
+                            src={item.icon}
+                            alt={item.symbol}
+                            className="w-4 h-4"
+                          />
+                          <span className="text-label-sm text-text-primary">
+                            {item.symbol}
+                          </span>
+                        </div>
+                        <span className="text-label-sm text-text-primary font-mono">
+                          {item.amount}
+                        </span>
+                      </div>
+                    ))}
                   </div>
                 )}
               </div>
             </div>
-
-            {/* Positions Section */}
-            <div className="bg-bg-raised rounded-lg p-13px">
-              <div className="flex items-center gap-9px border-b border-border-default mb-13px">
-                <button
-                  onClick={() => setActivePositionTab('positions')}
-                  className={cn(
-                    'text-label-sm font-medium transition-all relative px-0 py-7px',
-                    activePositionTab === 'positions'
-                      ? 'text-text-primary'
-                      : 'text-text-disabled',
-                  )}
-                >
-                  Positions (2)
-                  {activePositionTab === 'positions' && (
-                    <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-white" />
-                  )}
-                </button>
-                <button
-                  onClick={() => setActivePositionTab('twap')}
-                  className={cn(
-                    'text-label-sm font-medium transition-all relative px-0 py-7px',
-                    activePositionTab === 'twap'
-                      ? 'text-text-primary'
-                      : 'text-text-disabled',
-                  )}
-                >
-                  TWAP
-                  {activePositionTab === 'twap' && (
-                    <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-white" />
-                  )}
-                </button>
-                <button
-                  onClick={() => setActivePositionTab('openOrders')}
-                  className={cn(
-                    'text-label-sm font-medium transition-all relative px-0 py-7px',
-                    activePositionTab === 'openOrders'
-                      ? 'text-text-primary'
-                      : 'text-text-disabled',
-                  )}
-                >
-                  Open Orders
-                  {activePositionTab === 'openOrders' && (
-                    <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-white" />
-                  )}
-                </button>
-                <button
-                  onClick={() => setActivePositionTab('allHistory')}
-                  className={cn(
-                    'text-label-sm font-medium transition-all relative px-0 py-7px',
-                    activePositionTab === 'allHistory'
-                      ? 'text-text-primary'
-                      : 'text-text-disabled',
-                  )}
-                >
-                  All Trade History
-                  {activePositionTab === 'allHistory' && (
-                    <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-white" />
-                  )}
-                </button>
-                <button
-                  className={cn(
-                    'text-label-sm font-medium transition-all relative px-0 py-7px text-text-disabled',
-                  )}
-                >
-                  Investors (12)
-                </button>
-              </div>
-
-              {/* Positions Table */}
-              {activePositionTab === 'positions' && (
-                <div className="overflow-x-auto">
-                  <table className="w-full">
-                    <thead>
-                      <tr className="border-b border-border-default">
-                        <th className="text-left px-3px py-7px text-label-sm font-medium text-text-tertiary">
-                          Pair
-                        </th>
-                        <th className="text-center px-3px py-7px text-label-sm font-medium text-text-tertiary">
-                          Size
-                        </th>
-                        <th className="text-center px-3px py-7px text-label-sm font-medium text-text-tertiary">
-                          Lvg
-                        </th>
-                        <th className="text-center px-3px py-7px text-label-sm font-medium text-text-tertiary">
-                          Entry Price
-                        </th>
-                        <th className="text-center px-3px py-7px text-label-sm font-medium text-text-tertiary">
-                          Mark Price
-                        </th>
-                        <th className="text-center px-3px py-7px text-label-sm font-medium text-text-tertiary">
-                          Margin
-                        </th>
-                        <th className="text-center px-3px py-7px text-label-sm font-medium text-text-tertiary">
-                          PnL
-                        </th>
-                        <th className="text-center px-3px py-7px text-label-sm font-medium text-text-tertiary">
-                          TP / SL
-                        </th>
-                        <th className="text-center px-3px py-7px text-label-sm font-medium text-text-tertiary">
-                          Liq Price
-                        </th>
-                        <th className="text-center px-3px py-7px text-label-sm font-medium text-text-tertiary">
-                          Funding
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {mockPositions.map((position) => (
-                        <tr
-                          key={position.id}
-                          className="border-b border-border-default hover:bg-bg-overlay transition-colors"
-                        >
-                          <td className="px-3px py-7px">
-                            <div className="flex items-center gap-5px">
-                              <div className="flex items-center">
-                                <img
-                                  src="/tokens/usdc.svg"
-                                  alt={position.pair.token1}
-                                  className="w-5 h-5"
-                                />
-                                <img
-                                  src="/tokens/usdc.svg"
-                                  alt={position.pair.token2}
-                                  className="w-5 h-5 -ml-2"
-                                />
-                              </div>
-                              <span className="text-label-sm text-text-primary font-medium">
-                                {position.pair.token1}/{position.pair.token2}
-                              </span>
-                            </div>
-                          </td>
-                          <td className="px-3px py-7px text-center text-label-sm text-text-primary font-mono">
-                            {position.size}
-                          </td>
-                          <td className="px-3px py-7px text-center">
-                            <div className="flex items-center justify-center gap-3px">
-                              <span className="text-label-sm text-text-primary">
-                                {position.leverage}
-                              </span>
-                              {position.leverage !== '2x' && (
-                                <button className="p-1 hover:opacity-70">
-                                  <svg
-                                    width="12"
-                                    height="12"
-                                    viewBox="0 0 12 12"
-                                    fill="none"
-                                  >
-                                    <path
-                                      d="M6 2V10M10 6H2"
-                                      stroke="#A2DB5C"
-                                      strokeWidth="1.5"
-                                      strokeLinecap="round"
-                                    />
-                                  </svg>
-                                </button>
-                              )}
-                            </div>
-                          </td>
-                          <td className="px-3px py-7px text-center text-label-sm text-text-primary font-mono">
-                            {position.entryPrice}
-                          </td>
-                          <td className="px-3px py-7px text-center text-label-sm text-text-primary font-mono">
-                            {position.markPrice}
-                          </td>
-                          <td className="px-3px py-7px text-center text-label-sm text-text-primary font-mono">
-                            {position.margin}
-                          </td>
-                          <td className="px-3px py-7px text-center">
-                            <div
-                              className={cn(
-                                'text-label-sm font-mono',
-                                position.pnlPositive
-                                  ? 'text-text-profit'
-                                  : 'text-text-loss',
-                              )}
-                            >
-                              {position.pnl} ({position.pnlPercent})
-                            </div>
-                          </td>
-                          <td className="px-3px py-7px text-center text-label-sm text-text-primary font-mono">
-                            {position.tpSl}
-                          </td>
-                          <td className="px-3px py-7px text-center text-label-sm text-text-primary font-mono">
-                            {position.liqPrice}
-                          </td>
-                          <td className="px-3px py-7px text-center text-label-sm text-text-primary font-mono">
-                            {position.funding}
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              )}
-
-              {activePositionTab !== 'positions' && (
-                <div className="py-13px text-center text-label-sm text-text-tertiary">
-                  No data available
-                </div>
-              )}
-            </div>
           </div>
 
           {/* Right Column - Allocation Chart */}
-          <div className="lg:w-[361px] space-y-10px">
-            <div className="bg-bg-raised rounded-lg p-13px">
-              <h3 className="text-label-sm font-semibold text-text-primary mb-13px">
+          <div className="w-full lg:w-[350px] space-y-5px">
+            <div className="bg-bg-raised space-y-9px rounded-lg p-9px">
+              <h3 className="text-label-sm font-medium text-text-primary">
                 Vault Portfolio Allocation
               </h3>
 
               {/* Donut Chart */}
-              <div className="flex items-center justify-center mb-13px">
+              <div className="flex items-center justify-center mb-7px">
                 <DonutChart data={mockAllocation} />
               </div>
 
@@ -641,16 +672,17 @@ function VaultDetailPage() {
                   >
                     <div className="flex items-center gap-5px">
                       <div
-                        className="w-3 h-3 rounded-full"
+                        className="w-3 h-3 rounded"
                         style={{ backgroundColor: strategy.color }}
                       />
-                      <span className="text-label-sm text-text-tertiary">
+                      <span className="text-label-sm text-text-primary">
                         {strategy.label}
                       </span>
-                      <span className="text-label-sm text-text-disabled">
-                        ({strategy.percentage}%)
-                      </span>
                     </div>
+                    <span className="text-label-sm text-text-tertiary">
+                      ({strategy.percentage}%)
+                    </span>
+
                     <span className="text-label-sm text-text-primary font-mono">
                       {strategy.value}
                     </span>
@@ -660,43 +692,234 @@ function VaultDetailPage() {
             </div>
 
             {/* My PnL Section */}
-            <div className="bg-bg-raised rounded-lg p-13px space-y-9px">
-              <div className="flex items-center justify-between pb-7px border-b border-border-default">
+            <div className="flex items-center bg-bg-raised p-9px rounded-lg justify-between">
+              <div className="flex flex-col gap-5px">
                 <span className="text-label-sm text-text-tertiary">
                   My all time pnl
                 </span>
-                <div className="flex items-center gap-5px">
-                  <span className="text-label-md text-text-primary font-medium">
-                    {vault.myAllTimePnl}
-                  </span>
-                  <button className="p-1 hover:opacity-70">
-                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                      <path
-                        d="M8 4L10 2M10 2L8 0M10 2H6C3.79086 2 2 3.79086 2 6V6C2 8.20914 3.79086 10 6 10H10"
-                        stroke="#10B981"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                  </button>
-                </div>
+                <span className="text-label-sm text-text-primary font-medium">
+                  {vault.myAllTimePnl}
+                </span>
               </div>
+              <span className="text-label-sm text-text-secondary">12 Days</span>
+            </div>
 
-              <div className="flex items-center justify-between">
+            <div className="flex items-center bg-bg-raised p-9px rounded-lg justify-between">
+              <div className="flex flex-col gap-5px">
                 <span className="text-label-sm text-text-tertiary">
                   My unrealized PnL
                 </span>
-                <span className="text-label-md text-text-primary font-medium">
+                <span className="text-label-sm text-text-profit font-medium">
                   {vault.myUnrealizedPnl}
                 </span>
               </div>
-
-              <div className="text-label-xs text-text-disabled pt-5px">
-                12 Days
+              <div className="h-8 w-8 flex items-center justify-center bg-btn-secondary-active hover:bg-btn-secondary-hover rounded-lg p-5px">
+                {ShareIcon}
               </div>
             </div>
           </div>
+        </div>
+
+        {/* Positions Section */}
+        <div className="bg-bg-raised rounded-lg p-7px">
+          <div className="flex items-center gap-5px lg:gap-7px border-b border-border-default mb-7px overflow-x-auto scrollbar-hide">
+            <button
+              onClick={() => setActivePositionTab('positions')}
+              className={cn(
+                'text-label-sm font-medium transition-all relative px-0 py-5px whitespace-nowrap',
+                activePositionTab === 'positions'
+                  ? 'text-text-primary'
+                  : 'text-text-disabled',
+              )}
+            >
+              Positions (2)
+              {activePositionTab === 'positions' && (
+                <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-text-primary" />
+              )}
+            </button>
+            <button
+              onClick={() => setActivePositionTab('twap')}
+              className={cn(
+                'text-label-sm font-medium transition-all relative px-0 py-5px whitespace-nowrap',
+                activePositionTab === 'twap'
+                  ? 'text-text-primary'
+                  : 'text-text-disabled',
+              )}
+            >
+              TWAP
+              {activePositionTab === 'twap' && (
+                <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-text-primary" />
+              )}
+            </button>
+            <button
+              onClick={() => setActivePositionTab('openOrders')}
+              className={cn(
+                'text-label-sm font-medium transition-all relative px-0 py-5px whitespace-nowrap',
+                activePositionTab === 'openOrders'
+                  ? 'text-text-primary'
+                  : 'text-text-disabled',
+              )}
+            >
+              Open Orders
+              {activePositionTab === 'openOrders' && (
+                <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-text-primary" />
+              )}
+            </button>
+            <button
+              onClick={() => setActivePositionTab('allHistory')}
+              className={cn(
+                'text-label-sm font-medium transition-all relative px-0 py-5px whitespace-nowrap',
+                activePositionTab === 'allHistory'
+                  ? 'text-text-primary'
+                  : 'text-text-disabled',
+              )}
+            >
+              All Trade History
+              {activePositionTab === 'allHistory' && (
+                <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-text-primary" />
+              )}
+            </button>
+            <button
+              className={cn(
+                'text-label-sm font-medium transition-all relative px-0 py-5px text-text-disabled whitespace-nowrap',
+              )}
+            >
+              Investors (12)
+            </button>
+          </div>
+
+          {/* Positions Table */}
+          {activePositionTab === 'positions' && (
+            <div className="overflow-x-auto scrollbar-hide">
+              <table className="w-full">
+                <thead>
+                  <tr className="border-b border-border-default">
+                    <th className="text-left px-3px py-5px text-label-sm font-medium text-text-tertiary">
+                      Pair
+                    </th>
+                    <th className="text-center px-3px py-5px text-label-sm font-medium text-text-tertiary">
+                      Size
+                    </th>
+                    <th className="text-center px-3px py-5px text-label-sm font-medium text-text-tertiary">
+                      Lvg
+                    </th>
+                    <th className="text-center px-3px py-5px text-label-sm font-medium text-text-tertiary">
+                      Entry Price
+                    </th>
+                    <th className="text-center px-3px py-5px text-label-sm font-medium text-text-tertiary">
+                      Mark Price
+                    </th>
+                    <th className="text-center px-3px py-5px text-label-sm font-medium text-text-tertiary">
+                      Margin
+                    </th>
+                    <th className="text-center px-3px py-5px text-label-sm font-medium text-text-tertiary">
+                      PnL
+                    </th>
+                    <th className="text-center px-3px py-5px text-label-sm font-medium text-text-tertiary">
+                      TP / SL
+                    </th>
+                    <th className="text-center px-3px py-5px text-label-sm font-medium text-text-tertiary">
+                      Liq Price
+                    </th>
+                    <th className="text-center px-3px py-5px text-label-sm font-medium text-text-tertiary">
+                      Funding
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {mockPositions.map((position) => (
+                    <tr
+                      key={position.id}
+                      className="border-b border-border-default hover:bg-bg-overlay/50 transition-colors"
+                    >
+                      <td className="px-3px py-5px">
+                        <div className="flex items-center gap-5px">
+                          <div className="flex items-center">
+                            <img
+                              src="/tokens/usdc.svg"
+                              alt={position.pair.token1}
+                              className="w-5 h-5"
+                            />
+                            <img
+                              src="/tokens/usdc.svg"
+                              alt={position.pair.token2}
+                              className="w-5 h-5 -ml-2"
+                            />
+                          </div>
+                          <span className="text-label-sm text-text-primary font-medium">
+                            {position.pair.token1}/{position.pair.token2}
+                          </span>
+                        </div>
+                      </td>
+                      <td className="px-3px py-5px text-center text-label-sm text-text-primary font-mono">
+                        {position.size}
+                      </td>
+                      <td className="px-3px py-5px text-center">
+                        <div className="flex items-center justify-center gap-3px">
+                          <span className="text-label-sm text-text-primary">
+                            {position.leverage}
+                          </span>
+                          {position.leverage !== '2x' && (
+                            <button className="p-1 hover:opacity-70">
+                              <svg
+                                width="12"
+                                height="12"
+                                viewBox="0 0 12 12"
+                                fill="none"
+                              >
+                                <path
+                                  d="M6 2V10M10 6H2"
+                                  stroke="#A2DB5C"
+                                  strokeWidth="1.5"
+                                  strokeLinecap="round"
+                                />
+                              </svg>
+                            </button>
+                          )}
+                        </div>
+                      </td>
+                      <td className="px-3px py-5px text-center text-label-sm text-text-primary font-mono">
+                        {position.entryPrice}
+                      </td>
+                      <td className="px-3px py-5px text-center text-label-sm text-text-primary font-mono">
+                        {position.markPrice}
+                      </td>
+                      <td className="px-3px py-5px text-center text-label-sm text-text-primary font-mono">
+                        {position.margin}
+                      </td>
+                      <td className="px-3px py-5px text-center">
+                        <div
+                          className={cn(
+                            'text-label-sm font-mono',
+                            position.pnlPositive
+                              ? 'text-text-profit'
+                              : 'text-text-loss',
+                          )}
+                        >
+                          {position.pnl} ({position.pnlPercent})
+                        </div>
+                      </td>
+                      <td className="px-3px py-5px text-center text-label-sm text-text-primary font-mono">
+                        {position.tpSl}
+                      </td>
+                      <td className="px-3px py-5px text-center text-label-sm text-text-primary font-mono">
+                        {position.liqPrice}
+                      </td>
+                      <td className="px-3px py-5px text-center text-label-sm text-text-primary font-mono">
+                        {position.funding}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+
+          {activePositionTab !== 'positions' && (
+            <div className="py-7px text-center text-label-sm text-text-tertiary">
+              No data available
+            </div>
+          )}
         </div>
       </div>
 
@@ -717,8 +940,10 @@ function VaultDetailPage() {
 function PerformanceChart({
   data,
 }: {
-  data: { time: string; value: number }[]
+  data: { date: string; value: number }[]
 }) {
+  if (!data || data.length === 0) return null
+
   const max = Math.max(...data.map((d) => d.value))
   const min = Math.min(...data.map((d) => d.value))
   const range = max - min || 1
@@ -726,7 +951,7 @@ function PerformanceChart({
   const points = data.map((point, index) => {
     const x = (index / (data.length - 1)) * 100
     const y = ((point.value - min) / range) * 100
-    return { x, y }
+    return { x, y, date: point.date, value: point.value }
   })
 
   const createPath = (points: { x: number; y: number }[]) => {
@@ -736,7 +961,12 @@ function PerformanceChart({
 
     for (let i = 1; i < points.length; i++) {
       const curr = points[i]
-      path += ` L ${curr.x} ${100 - curr.y}`
+      const prev = points[i - 1]
+      const cpX1 = prev.x + (curr.x - prev.x) / 2
+      const cpY1 = 100 - prev.y
+      const cpX2 = prev.x + (curr.x - prev.x) / 2
+      const cpY2 = 100 - curr.y
+      path += ` C ${cpX1} ${cpY1}, ${cpX2} ${cpY2}, ${curr.x} ${100 - curr.y}`
     }
 
     return path
@@ -744,39 +974,97 @@ function PerformanceChart({
 
   const pathData = createPath(points)
 
-  return (
-    <div className="w-full h-full relative">
-      <svg
-        viewBox="0 0 100 100"
-        preserveAspectRatio="none"
-        className="w-full h-full"
-      >
-        <defs>
-          <linearGradient id="chartGradient" x1="0" x2="0" y1="0" y2="1">
-            <stop offset="0%" stopColor="#EF4444" stopOpacity="0.3" />
-            <stop offset="100%" stopColor="#EF4444" stopOpacity="0" />
-          </linearGradient>
-        </defs>
-        {/* Fill area */}
-        <path
-          d={`${pathData} L 100 100 L 0 100 Z`}
-          fill="url(#chartGradient)"
-        />
-        {/* Line */}
-        <path
-          d={pathData}
-          fill="none"
-          stroke="#EF4444"
-          strokeWidth="0.5"
-          vectorEffect="non-scaling-stroke"
-        />
-      </svg>
+  // Calculate Y-axis labels
+  const yAxisValues = [max, (max + min) / 2, min]
 
-      {/* Y-axis labels */}
-      <div className="absolute left-0 top-0 bottom-0 flex flex-col justify-between text-label-xs text-text-disabled pr-2">
-        <span>${(max / 1000).toFixed(0)}000</span>
-        <span>${((max + min) / 2000).toFixed(0)}000</span>
-        <span>${(min / 1000).toFixed(0)}000</span>
+  // Calculate X-axis labels - show every 4th date
+  const xAxisLabels = data
+    .filter((_, index) => index % 4 === 0)
+    .map((item) => {
+      const date = new Date(item.date)
+      return {
+        label: date.toLocaleDateString('en-US', {
+          month: 'short',
+          day: 'numeric',
+        }),
+        x:
+          (data.findIndex((d) => d.date === item.date) / (data.length - 1)) *
+          100,
+      }
+    })
+
+  return (
+    <div className="w-full h-full relative flex gap-3px">
+      {/* Chart area */}
+      <div className="flex-1 flex flex-col min-h-0">
+        <div className="flex-1 relative min-h-0">
+          <svg
+            viewBox="0 0 100 100"
+            preserveAspectRatio="none"
+            className="w-full h-full"
+            style={{ display: 'block' }}
+          >
+            <defs>
+              <linearGradient id="chartGradient" x1="0" x2="0" y1="0" y2="1">
+                <stop offset="0%" stopColor="#EF4444" stopOpacity="0.3" />
+                <stop offset="100%" stopColor="#EF4444" stopOpacity="0" />
+              </linearGradient>
+            </defs>
+
+            {/* Vertical grid lines */}
+            {[0, 20, 40, 60, 80, 100].map((x) => (
+              <line
+                key={x}
+                x1={x}
+                y1="0"
+                x2={x}
+                y2="100"
+                stroke="#262626"
+                strokeWidth="0.3"
+                vectorEffect="non-scaling-stroke"
+              />
+            ))}
+
+            {/* Fill area */}
+            <path
+              d={`${pathData} L 100 100 L 0 100 Z`}
+              fill="url(#chartGradient)"
+            />
+            {/* Line */}
+            <path
+              d={pathData}
+              fill="none"
+              stroke="#EF4444"
+              strokeWidth="1.5"
+              vectorEffect="non-scaling-stroke"
+            />
+          </svg>
+        </div>
+
+        {/* X-axis labels */}
+        <div className="relative h-5 mt-2">
+          {xAxisLabels.map((label, index) => (
+            <span
+              key={index}
+              className="absolute text-label-sm text-text-disabled whitespace-nowrap"
+              style={{
+                left: `${label.x}%`,
+                transform: 'translateX(-50%)',
+              }}
+            >
+              {label.label}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      {/* Y-axis */}
+      <div className="flex flex-col justify-between py-2 text-label-sm text-text-disabled min-w-[40px]">
+        {yAxisValues.map((value, index) => (
+          <span key={index} className="text-left">
+            ${(value / 1000).toFixed(0)}k
+          </span>
+        ))}
       </div>
     </div>
   )
