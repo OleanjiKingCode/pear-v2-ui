@@ -15,7 +15,7 @@ export function BottomSheetModal({
   children,
   maxWidth = '660px',
 }: BottomSheetModalProps) {
-  const [snapPoint, setSnapPoint] = useState<SnapPoint>('half')
+  const [snapPoint, setSnapPoint] = useState<SnapPoint>('closed')
   const [isDragging, setIsDragging] = useState(false)
   const [startY, setStartY] = useState(0)
   const [currentY, setCurrentY] = useState(0)
