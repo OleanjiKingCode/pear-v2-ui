@@ -735,3 +735,24 @@ code {
   scrollbar-width: thin;
   scrollbar-color: var(--border-default) transparent;
 }
+
+/* Responsive page container */
+.page-container {
+  width: 100%;
+  max-width: 1500px;
+  margin: 0 auto;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+@media (min-width: 1200px) and (max-width: 1500px) {
+  .page-container {
+    max-width: 1360px;
+  }
+}
+
+@media (min-width: 1500px) {
+  .page-container {
+    max-width: 1500px;
+  }
+}

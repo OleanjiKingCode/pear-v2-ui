@@ -219,25 +219,9 @@ function VaultsPage() {
 
   return (
     <div className="relative">
-      {/* Gradient Background */}
-      <div
-        className="absolute top-0 left-0 right-0 w-full pointer-events-none opacity-10"
-        style={{
-          background:
-            'linear-gradient(180deg, #A2DB5C 0%, rgba(10, 10, 10, 0.00) 100%)',
-          height: '250px',
-        }}
-      />
-
       {/* Main Content */}
 
-      <div
-        className="flex flex-col px-4 pt-13px gap-12px "
-        style={{
-          maxWidth: '1232px',
-          margin: '0 auto',
-        }}
-      >
+      <div className="page-container flex flex-col pt-13px gap-12px">
         {/* Header */}
         <div className="flex flex-col gap-12px">
           <div className="flex items-end justify-between">
@@ -309,7 +293,7 @@ function VaultsPage() {
         </div>
 
         <div className="flex flex-col lg:flex-row items-start gap-10px">
-          <div className="w-full lg:w-[819px]">
+          <div className="w-full lg:flex-1">
             <div className="flex gap-9px justify-between border-b border-border-default w-full">
               <div className="flex items-center gap-9px w-full ">
                 <button
@@ -408,7 +392,8 @@ function VaultsPage() {
                               params: { vaultId: vault.id.toString() },
                             })
                           }
-                          className="hover:opacity-80 transition-opacity cursor-pointer bg-bg-raised"
+                          className="cursor-pointer bg-bg-raised transition-transform duration-200 hover:scale-[1.01] origin-center"
+                          style={{ transformOrigin: 'center' }}
                         >
                           <td className="p-5px h-12 rounded-l-lg pl-5px">
                             <img
@@ -442,10 +427,10 @@ function VaultsPage() {
                               )}
                             </div>
                           </td>
-                          <td className="p-5px h-12 text-label-md text-text-tertiary">
+                          <td className="p-5px h-12 text-label-md text-text-tertiary text-center">
                             {vault.leader}
                           </td>
-                          <td className="p-5px h-12 font-mono text-label-md text-text-primary">
+                          <td className="p-5px h-12 font-mono text-label-md text-text-primary  text-center">
                             {vault.tvl}
                           </td>
                           <td className="p-5px h-12 flex items-center justify-center">
@@ -453,14 +438,16 @@ function VaultsPage() {
                               {vault.apr}
                             </span>
                           </td>
-                          <td className="p-5px  h-12 text-label-md text-text-primary">
+                          <td className="p-5px  h-12 text-label-md text-text-primary text-center">
                             {vault.age}
                           </td>
                           <td className="p-5px h-12 flex items-center justify-center text-label-md text-text-primary">
                             {vault.investors}
                           </td>
-                          <td className=" rounded-r-lg p-5px">
-                            <MiniChart data={vault.chartData} />
+                          <td className="rounded-r-lg p-5px">
+                            <div className="flex items-center justify-center">
+                              <MiniChart data={vault.chartData} />
+                            </div>
                           </td>
                         </tr>
                       ))}
@@ -503,7 +490,8 @@ function VaultsPage() {
                                 params: { vaultId: vault.id.toString() },
                               })
                             }
-                            className="hover:opacity-80 transition-opacity cursor-pointer bg-bg-raised"
+                            className="cursor-pointer bg-bg-raised transition-transform duration-200 hover:scale-[1.01] origin-center"
+                            style={{ transformOrigin: 'center' }}
                           >
                             <td className="p-5px h-12 rounded-l-lg pl-5px">
                               <img
@@ -580,7 +568,8 @@ function VaultsPage() {
                           params: { vaultId: vault.id.toString() },
                         })
                       }
-                      className="bg-bg-raised rounded-lg p-10px hover:opacity-80 transition-opacity cursor-pointer"
+                      className="bg-bg-raised rounded-lg p-10px cursor-pointer transition-transform duration-200 hover:scale-[1.01]"
+                      style={{ transformOrigin: 'center' }}
                     >
                       <div className="flex items-center justify-between mb-7px">
                         {activeTab === 'invested' && (

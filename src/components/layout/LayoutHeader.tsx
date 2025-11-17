@@ -7,7 +7,10 @@ import { SettingsPopover } from '@/components/popovers/SettingsPopover'
 import { NotificationsPopover } from '@/components/popovers/NotificationsPopover'
 import { WalletPopover } from '@/components/popovers/WalletPopover'
 import { RestrictedRegionPopover } from '@/components/popovers/RestrictedRegionPopover'
-import { PearLogoPopover, type PearVersion } from '@/components/popovers/PearLogoPopover'
+import {
+  PearLogoPopover,
+  type PearVersion,
+} from '@/components/popovers/PearLogoPopover'
 import { EarnPopover } from '@/components/popovers/EarnPopover'
 import { MorePopover } from '@/components/popovers/MorePopover'
 import { ShimmerButton } from '@/components/ui/shimmer-button'
@@ -34,7 +37,7 @@ export function LayoutHeader({ onMenuClick }: LayoutHeaderProps) {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false)
   return (
     <>
-      <nav className="border-b bg-bg-raised border-border-default">
+      <nav className="bg-bg-raised border-b-0">
         <div className="flex items-center justify-between p-5px">
           <div className="flex items-center gap-10px">
             <PearLogoPopover

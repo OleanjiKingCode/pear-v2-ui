@@ -222,28 +222,12 @@ function VaultDetailPage() {
 
   return (
     <div className="relative min-h-screen">
-      {/* Gradient Background */}
-      <div
-        className="absolute top-0 left-0 right-0 w-full pointer-events-none opacity-10"
-        style={{
-          background:
-            'linear-gradient(180deg, #A2DB5C 0%, rgba(10, 10, 10, 0.00) 100%)',
-          height: '250px',
-        }}
-      />
-
-      <div
-        className="flex flex-col px-9px lg:px-9px pt-10 gap-12px"
-        style={{
-          maxWidth: '1232px',
-          margin: '0 auto',
-        }}
-      >
+      <div className="page-container flex flex-col pt-10 gap-12px">
         {/* Header */}
         <div className="flex flex-col gap-12px">
           <div className="flex items-center gap-5px">
             <Link to="/vaults">
-              <button className="p-5px w-8 h-8 flex items-center justify-center bg-transparent transition-colors">
+              <button className="p-5px w-8 h-8 flex items-center justify-center bg-transparent hover:bg-btn-tertiary-hover transition-colors rounded-lg">
                 <ChevronLeft className="w-4 h-4 text-text-primary" />
               </button>
             </Link>
@@ -354,7 +338,7 @@ function VaultDetailPage() {
         {/* Main Content Grid */}
         <div className="flex flex-col lg:flex-row gap-9px w-full">
           {/* Left Column - Chart and Info */}
-          <div className="flex-1 space-y-9px w-full lg:max-w-[830px]">
+          <div className="flex-1 space-y-9px w-full">
             {/* Chart Section */}
             <div className="rounded-lg space-y-5px">
               <Popover open={isTimeRangeOpen} onOpenChange={setIsTimeRangeOpen}>
@@ -431,7 +415,10 @@ function VaultDetailPage() {
 
               {/* Chart */}
               <div className="h-[342px] w-full">
-                <PerformanceChart data={filteredChartData} />
+                <PerformanceChart
+                  data={filteredChartData}
+                  isProfit={vault.pnlPositive}
+                />
               </div>
             </div>
 
@@ -503,7 +490,7 @@ function VaultDetailPage() {
                           Vault Address:
                         </span>
                         <div className="flex items-center gap-3px">
-                          <span className="text-label-sm text-text-secondary font-mono">
+                          <span className="text-label-sm text-text-secondary">
                             {vault.vaultAddress}
                           </span>
                           <button
@@ -520,7 +507,7 @@ function VaultDetailPage() {
                           Leader Address:
                         </span>
                         <div className="flex items-center gap-3px">
-                          <span className="text-label-sm text-text-secondary font-mono">
+                          <span className="text-label-sm text-text-secondary">
                             {vault.leaderAddress}
                           </span>
                           <button
@@ -939,8 +926,10 @@ function VaultDetailPage() {
 // Performance Chart Component
 function PerformanceChart({
   data,
+  isProfit = true,
 }: {
   data: { date: string; value: number }[]
+  isProfit?: boolean
 }) {
   if (!data || data.length === 0) return null
 
@@ -974,6 +963,10 @@ function PerformanceChart({
 
   const pathData = createPath(points)
 
+  // Dynamic colors based on profit/loss
+  const strokeColor = isProfit ? '#4ADE80' : '#EF4444'
+  const gradientColor = isProfit ? '#4ADE80' : '#EF4444'
+
   // Calculate Y-axis labels
   const yAxisValues = [max, (max + min) / 2, min]
 
@@ -1006,8 +999,8 @@ function PerformanceChart({
           >
             <defs>
               <linearGradient id="chartGradient" x1="0" x2="0" y1="0" y2="1">
-                <stop offset="0%" stopColor="#EF4444" stopOpacity="0.3" />
-                <stop offset="100%" stopColor="#EF4444" stopOpacity="0" />
+                <stop offset="0%" stopColor={gradientColor} stopOpacity="0.3" />
+                <stop offset="100%" stopColor={gradientColor} stopOpacity="0" />
               </linearGradient>
             </defs>
 
@@ -1034,7 +1027,7 @@ function PerformanceChart({
             <path
               d={pathData}
               fill="none"
-              stroke="#EF4444"
+              stroke={strokeColor}
               strokeWidth="1.5"
               vectorEffect="non-scaling-stroke"
             />
